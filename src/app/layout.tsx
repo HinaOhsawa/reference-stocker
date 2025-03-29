@@ -29,7 +29,9 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Header />
-        {children}
+        <main className="flex-1 items-center container mx-auto p-4">
+          {children}
+        </main>
       </body>
     </html>
   );
