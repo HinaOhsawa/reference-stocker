@@ -26,7 +26,7 @@ const PostCard = ({ PostData }: DataProps) => {
       </CardHeader>
       <CardContent>{url}</CardContent>
       <CardFooter className="flex justify-between">
-        <Link href={`/posts/${id}`} className="text-blue-500">
+        <Link href={`/post/${id}`} className="text-blue-500">
           Read More
         </Link>
       </CardFooter>
