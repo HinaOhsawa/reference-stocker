@@ -18,9 +18,10 @@ export default async function PostDetail({
 
   if (!post) return <p>Post not found</p>;
 
+  const { title, url, createdAt, user, memo, tags } = post;
   return (
-    <div className="flex justify-center px-4">
-      <Card className="border-none shadow-none">
+    <div className="max-w-4xl mx-auto px-4">
+      <Card className="border-none shadow-none block">
         <CardHeader className="px-0 space-y-4">
           <div className="flex items-center gap-4">
             <Avatar className="w-12 h-12">
@@ -28,41 +29,37 @@ export default async function PostDetail({
                 src="/placeholder.svg?height=50&width=50"
                 alt="@username"
               />
-              <AvatarFallback>{post.user}</AvatarFallback>
+              <AvatarFallback>{user}</AvatarFallback>
             </Avatar>
             <div>
-              <p className="font-semibold">User{post.user}</p>
+              <p className="font-semibold">User{user}</p>
             </div>
           </div>
-          <h1 className="text-2xl font-bold">{post.title}</h1>
-          <div className="flex flex-wrap gap-2">
-            <span className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-primary text-primary-foreground hover:bg-primary/80">
-              富士山
-            </span>
-            <span className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-primary text-primary-foreground hover:bg-primary/80">
-              写真
-            </span>
+          <h1 className="text-2xl font-bold">{title}</h1>
+          <div className="flex flex-wrap gap-1">
+            {tags.map((tag) => (
+              <span key={tag.id} className="tag">
+                {tag.name}
+              </span>
+            ))}
           </div>
-          <div className="text-sm text-muted-foreground">
-            投稿日 {dayjs(post.createdAt).format("YYYY/MM/DD HH:mm")}
+          <div className="text-sm text-muted-foreground mb-2">
+            投稿日 {dayjs(createdAt).format("YYYY/MM/DD HH:mm")}
           </div>
         </CardHeader>
         <CardContent className="px-0 space-y-4">
           <div className="space-y-4">
             <Card className="overflow-hidden">
-              <Link href={post.url} className="flex flex-col sm:flex-row">
+              <Link href={url} className="flex flex-col sm:flex-row">
                 <div className="p-4 sm:w-2/3">
                   <div className="text-xs text-muted-foreground mt-2">
-                    {post.url}
+                    {url}
                   </div>
                 </div>
               </Link>
             </Card>
             <h3 className="font-semibold mb-2">Memo</h3>
-            <p className="text-sm text-muted-foreground line-clamp-3">
-              先週末、山梨県へ旅行に行ってきました。天気が良く、富士山がとても綺麗に見えました。
-              この写真は河口湖から撮影したものです。朝日に照らされた富士山は本当に素晴らしい景色でした。
-            </p>
+            <p className="text-sm text-muted-foreground line-clamp-3">{memo}</p>
           </div>
           <div className="flex items-center gap-2">
             <Button
