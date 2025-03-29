@@ -16,21 +16,26 @@ interface DataProps {
 }
 
 const PostCard = ({ PostData }: DataProps) => {
-  const { id, title, url, createdAt, user } = PostData; // 分割代入
+  const { id, title, url, createdAt, user, tags } = PostData; // 分割代入
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>{title}</CardTitle>
-        <small>{dayjs(createdAt).format("YYYY/MM/DD HH:mm")}</small>
-        <CardDescription>{user}</CardDescription>
-      </CardHeader>
-      <CardContent>{url}</CardContent>
-      <CardFooter className="flex justify-between">
-        <Link href={`/post/${id}`} className="text-blue-500">
-          Read More
-        </Link>
-      </CardFooter>
-    </Card>
+    <Link href={`/post/${id}`} className="text-blue-500">
+      <Card>
+        <CardHeader>
+          <CardTitle>{title}</CardTitle>
+          <small>{dayjs(createdAt).format("YYYY/MM/DD HH:mm")}</small>
+          <CardDescription>{user}</CardDescription>
+        </CardHeader>
+        <CardContent>{url}</CardContent>
+
+        <CardFooter className="flex justify-between">
+          {tags.map((tag) => (
+            <span key={tag.id} className="tag">
+              {tag.name}
+            </span>
+          ))}
+        </CardFooter>
+      </Card>
+    </Link>
   );
 };
 

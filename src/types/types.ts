@@ -8,4 +8,10 @@ export interface Post {
   user: string;
   createdAt: string;
   updatedAt: string;
+  tags: Tag[];
+}
+
+export interface Tag {
+  id: string;
+  name: string;
 }
