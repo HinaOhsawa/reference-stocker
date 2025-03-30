@@ -10,6 +10,7 @@ import {
 import Link from "next/link";
 import { Post } from "@/types/types";
 import dayjs from "dayjs";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
 
 interface DataProps {
   PostData: Post;
@@ -23,7 +24,16 @@ const PostCard = ({ PostData }: DataProps) => {
         <CardHeader>
           <CardTitle>{title}</CardTitle>
           <small>{dayjs(createdAt).format("YYYY/MM/DD HH:mm")}</small>
-          <CardDescription>{user}</CardDescription>
+
+          <CardDescription>
+            {" "}
+            <div className="flex items-center gap-4">
+              <Avatar className="w-8 h-8">
+                <AvatarImage src={user.image} alt="@username" />
+              </Avatar>
+              <p>{user.name}</p>
+            </div>
+          </CardDescription>
         </CardHeader>
         <CardContent>{url}</CardContent>
 

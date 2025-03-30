@@ -1,5 +1,5 @@
 import { getPostDetail } from "@/lib/posts";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { BookmarkIcon } from "lucide-react";
@@ -25,14 +25,10 @@ export default async function PostDetail({
         <CardHeader className="px-0 space-y-4">
           <div className="flex items-center gap-4">
             <Avatar className="w-12 h-12">
-              <AvatarImage
-                src="/placeholder.svg?height=50&width=50"
-                alt="@username"
-              />
-              <AvatarFallback>{user}</AvatarFallback>
+              <AvatarImage src={user.image} alt="@username" />
             </Avatar>
             <div>
-              <p className="font-semibold">User{user}</p>
+              <p className="font-semibold">{user.name}</p>
             </div>
           </div>
           <h1 className="text-2xl font-bold">{title}</h1>
