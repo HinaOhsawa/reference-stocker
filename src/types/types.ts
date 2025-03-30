@@ -5,7 +5,7 @@ export interface Post {
   memo: string;
   userId: string;
   published: boolean;
-  user: string;
+  user: User;
   createdAt: string;
   updatedAt: string;
   tags: Tag[];
@@ -14,4 +14,10 @@ export interface Post {
 export interface Tag {
   id: string;
   name: string;
+}
+
+export interface User {
+  id: string;
+  name: string;
+  image: string;
 }
