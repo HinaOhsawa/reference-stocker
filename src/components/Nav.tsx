@@ -8,17 +8,24 @@ import {
   // NavigationMenuTrigger,
   // NavigationMenuViewport,
 } from "@/components/ui/navigation-menu";
-import { Button } from "./ui/button";
+import { buttonVariants } from "./ui/button";
 import { Pen } from "lucide-react";
+import Link from "next/link";
+import { cn } from "@/lib/utils";
 
 export default function Nav() {
   return (
     <NavigationMenu>
       <NavigationMenuList>
         <NavigationMenuItem>
-          <Button>
+          <Link
+            href="/post/create"
+            className={cn(buttonVariants({ variant: "default" }))}
+          >
+            {/* <Button> */}
             <Pen /> New Create
-          </Button>
+            {/* </Button> */}
+          </Link>
           {/* <NavigationMenuTrigger>Item One</NavigationMenuTrigger> */}
           {/* <NavigationMenuContent>
           <NavigationMenuLink>New Create</NavigationMenuLink>
