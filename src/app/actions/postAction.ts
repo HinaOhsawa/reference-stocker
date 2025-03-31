@@ -11,6 +11,7 @@ export const createPost = async ({
   title,
   url,
   memo,
+  tags,
 }: z.infer<typeof formSchema>) => {
   const session = await auth();
 
@@ -25,6 +26,12 @@ export const createPost = async ({
           url,
           title,
           memo,
+          tags: {
+            connectOrCreate: (tags ?? []).map((tag) => ({
+              where: { name: tag },
+              create: { name: tag },
+            })),
+          },
           user: {
             connect: { id: dbUser.id }, // 既存のユーザーを関連付ける
           },

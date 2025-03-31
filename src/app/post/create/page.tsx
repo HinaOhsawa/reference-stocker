@@ -1,6 +1,6 @@
 "use client";
 import { createPost } from "@/app/actions/postAction";
-// import { useRouter } from "next/navigation";
+import { TagInput } from "@/components/TagInput";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -15,6 +15,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { useState } from "react";
 
 // バリデーション Zod のスキーマ定義
 export const formSchema = z.object({
@@ -30,10 +31,12 @@ export const formSchema = z.object({
     .string()
     .max(200, { message: "本文は200文字以内で入力してください。" })
     .optional(),
+  tags: z.array(z.string()).optional(),
 });
 
 const CreatePostPage = () => {
   // const router = useRouter();
+  const [tags, setTags] = useState<string[]>([]);
 
   const form = useForm({
     //zodResolver は Zod を React Hook Form で使うための関数
@@ -42,13 +45,14 @@ const CreatePostPage = () => {
       title: "",
       url: "",
       memo: "",
+      tags: [],
     },
   });
 
   async function onSubmit(value: z.infer<typeof formSchema>) {
     const { title, url, memo } = value;
     // サーバーアクションを使う
-    createPost({ title, url, memo });
+    createPost({ title, url, memo, tags });
   }
 
   return (
@@ -99,6 +103,20 @@ const CreatePostPage = () => {
                   className="resize-none"
                   {...field}
                 />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="tags"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel className="font-bold">タグ</FormLabel>
+              <FormControl>
+                <TagInput tags={tags} setTags={setTags} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
