@@ -37,7 +37,7 @@ const PostCard = ({ PostData }: DataProps) => {
         </CardHeader>
         <CardContent>{url}</CardContent>
 
-        <CardFooter className="flex justify-between">
+        <CardFooter className="flex flex-wrap gap-2 mb-2">
           {tags.map((tag) => (
             <span key={tag.id} className="tag">
               {tag.name}
