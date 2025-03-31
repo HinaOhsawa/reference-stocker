@@ -2,6 +2,7 @@
 import { createPost } from "@/app/actions/postAction";
 import { TagInput } from "@/components/TagInput";
 import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/switch";
 import {
   Form,
   FormControl,
@@ -32,11 +33,12 @@ export const formSchema = z.object({
     .max(200, { message: "本文は200文字以内で入力してください。" })
     .optional(),
   tags: z.array(z.string()).optional(),
+  published: z.boolean(),
 });
 
 const CreatePostPage = () => {
-  // const router = useRouter();
   const [tags, setTags] = useState<string[]>([]);
+  const [status, setStatus] = useState<"draft" | "published">("draft");
 
   const form = useForm({
     //zodResolver は Zod を React Hook Form で使うための関数
@@ -46,13 +48,14 @@ const CreatePostPage = () => {
       url: "",
       memo: "",
       tags: [],
+      published: false,
     },
   });
 
   async function onSubmit(value: z.infer<typeof formSchema>) {
-    const { title, url, memo } = value;
+    const { title, url, memo, tags, published } = value;
     // サーバーアクションを使う
-    createPost({ title, url, memo, tags });
+    createPost({ title, url, memo, tags, published });
   }
 
   return (
@@ -61,7 +64,7 @@ const CreatePostPage = () => {
         onSubmit={form.handleSubmit(onSubmit)}
         className="space-y-3 max-w-4xl mx-auto px-4"
       >
-        <FormField
+        <FormField // タイトル
           control={form.control}
           name="title"
           render={({ field }) => (
@@ -74,7 +77,8 @@ const CreatePostPage = () => {
             </FormItem>
           )}
         />
-        <FormField
+
+        <FormField // URL
           control={form.control}
           name="url"
           render={({ field }) => (
@@ -91,7 +95,8 @@ const CreatePostPage = () => {
             </FormItem>
           )}
         />
-        <FormField
+
+        <FormField // メモ
           control={form.control}
           name="memo"
           render={({ field }) => (
@@ -109,7 +114,7 @@ const CreatePostPage = () => {
           )}
         />
 
-        <FormField
+        <FormField // タグ
           control={form.control}
           name="tags"
           render={({ field }) => (
@@ -117,6 +122,32 @@ const CreatePostPage = () => {
               <FormLabel className="font-bold">タグ</FormLabel>
               <FormControl>
                 <TagInput tags={tags} setTags={setTags} {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField // 公開設定
+          control={form.control}
+          name="published"
+          render={() => (
+            <FormItem>
+              <FormLabel className="font-bold">公開</FormLabel>
+              <FormControl>
+                <div className="flex items-center gap-2 justify-between">
+                  <p className="text-sm text-muted-foreground">
+                    {status === "published"
+                      ? "記事を公開します"
+                      : "下書きとして保存します"}
+                  </p>
+                  <Switch
+                    checked={status === "published"}
+                    onCheckedChange={(checked) =>
+                      setStatus(checked ? "published" : "draft")
+                    }
+                  />
+                </div>
               </FormControl>
               <FormMessage />
             </FormItem>
