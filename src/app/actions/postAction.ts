@@ -12,6 +12,7 @@ export const createPost = async ({
   url,
   memo,
   tags,
+  published,
 }: z.infer<typeof formSchema>) => {
   const session = await auth();
 
@@ -26,6 +27,7 @@ export const createPost = async ({
           url,
           title,
           memo,
+          published,
           tags: {
             connectOrCreate: (tags ?? []).map((tag) => ({
               where: { name: tag },

@@ -38,7 +38,7 @@ export const formSchema = z.object({
 
 const CreatePostPage = () => {
   const [tags, setTags] = useState<string[]>([]);
-  const [status, setStatus] = useState<"draft" | "published">("draft");
+  const [isPublished, setIsPublished] = useState(false); // 公開状態の初期値
 
   const form = useForm({
     //zodResolver は Zod を React Hook Form で使うための関数
@@ -53,7 +53,7 @@ const CreatePostPage = () => {
   });
 
   async function onSubmit(value: z.infer<typeof formSchema>) {
-    const { title, url, memo, tags, published } = value;
+    const { title, url, memo, published } = value;
     // サーバーアクションを使う
     createPost({ title, url, memo, tags, published });
   }
@@ -131,21 +131,22 @@ const CreatePostPage = () => {
         <FormField // 公開設定
           control={form.control}
           name="published"
-          render={() => (
+          render={({ field }) => (
             <FormItem>
               <FormLabel className="font-bold">公開</FormLabel>
               <FormControl>
                 <div className="flex items-center gap-2 justify-between">
                   <p className="text-sm text-muted-foreground">
-                    {status === "published"
+                    {isPublished
                       ? "記事を公開します"
                       : "下書きとして保存します"}
                   </p>
                   <Switch
-                    checked={status === "published"}
-                    onCheckedChange={(checked) =>
-                      setStatus(checked ? "published" : "draft")
-                    }
+                    checked={field.value}
+                    onCheckedChange={(value) => {
+                      field.onChange(value);
+                      setIsPublished(value);
+                    }}
                   />
                 </div>
               </FormControl>
