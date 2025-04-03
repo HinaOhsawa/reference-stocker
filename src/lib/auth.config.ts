@@ -95,5 +95,17 @@ export const authConfig = {
 
       return true;
     },
+    async session({ session }) {
+      // Prisma でユーザー情報を取得し、ID を追加
+      const dbUser = await prisma.user.findUnique({
+        where: { email: session.user.email },
+      });
+
+      if (dbUser) {
+        session.user.id = dbUser.id; // ユーザーIDを追加
+      }
+
+      return session;
+    },
   },
 } satisfies NextAuthConfig; // 型チェックのみ行い、型の推論を保持
