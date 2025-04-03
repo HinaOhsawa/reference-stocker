@@ -33,7 +33,7 @@ export default async function PostDetail({
           </div>
           <h1 className="text-2xl font-bold">{title}</h1>
           <div className="flex flex-wrap gap-1">
-            {tags.map((tag) => (
+            {tags?.map((tag) => (
               <span key={tag.id} className="tag">
                 {tag.name}
               </span>
