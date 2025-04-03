@@ -1,5 +1,5 @@
 "use client";
-import { createPost } from "@/app/actions/postAction";
+import { createPost } from "@/app/actions/createPostAction";
 import { TagInput } from "@/components/TagInput";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";

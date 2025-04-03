@@ -1,5 +1,4 @@
 "use client";
-import { createPost } from "@/app/actions/postAction";
 import { TagInput } from "@/components/TagInput";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
@@ -18,6 +17,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useEffect, useState } from "react";
 import { getPostDetail } from "@/lib/posts";
+import { updatePost } from "@/app/actions/updatePostAction";
 
 // タグのスキーマ
 const tagSchema = z.object({
@@ -39,7 +39,7 @@ export const formSchema = z.object({
     .max(200, { message: "本文は200文字以内で入力してください。" })
     .optional(),
   tags: z.array(tagSchema).optional(),
-  // tags: z.array(string()).optional(),
+  // tags: z.array(z.string()).optional(),
   published: z.boolean(),
 });
 
@@ -79,7 +79,7 @@ export default function EditPostPage({ params }: { params: { id: string } }) {
   async function onSubmit(value: z.infer<typeof formSchema>) {
     const { title, url, memo, published } = value;
     // サーバーアクションを使う
-    createPost({ title, url, memo, tags, published });
+    updatePost({ title, url, memo, tags, published }, id);
   }
 
   return (
