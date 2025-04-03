@@ -11,6 +11,7 @@ import Link from "next/link";
 import { Post } from "@/types/types";
 import dayjs from "dayjs";
 import { Button } from "./ui/button";
+import DeletePostButton from "./DeletePostButton";
 
 interface DataProps {
   PostData: Post;
@@ -46,6 +47,7 @@ const MyPostCard = ({ PostData }: DataProps) => {
         <Button>
           <Link href={`/post/edit/${id}`}>編集</Link>
         </Button>
+        <DeletePostButton postId={id} />
       </CardFooter>
     </Card>
   );
