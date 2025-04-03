@@ -3,7 +3,7 @@ import {
   // NavigationMenuContent,
   // NavigationMenuIndicator,
   NavigationMenuItem,
-  // NavigationMenuLink,
+  NavigationMenuLink,
   NavigationMenuList,
   // NavigationMenuTrigger,
   // NavigationMenuViewport,
@@ -18,13 +18,14 @@ export default function Nav() {
     <NavigationMenu>
       <NavigationMenuList>
         <NavigationMenuItem>
+          <NavigationMenuLink href="/my-page">My Page</NavigationMenuLink>
+        </NavigationMenuItem>
+        <NavigationMenuItem>
           <Link
             href="/post/create"
             className={cn(buttonVariants({ variant: "default" }))}
           >
-            {/* <Button> */}
             <Pen /> New Create
-            {/* </Button> */}
           </Link>
           {/* <NavigationMenuTrigger>Item One</NavigationMenuTrigger> */}
           {/* <NavigationMenuContent>
