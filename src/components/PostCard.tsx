@@ -11,13 +11,24 @@ import Link from "next/link";
 import { Post } from "@/types/types";
 import dayjs from "dayjs";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import { BookmarkButton } from "./BookmarkButton";
+import { auth } from "@/lib/auth";
+import { prisma } from "@/lib/prismaClient";
 
 interface DataProps {
   PostData: Post;
 }
 
-const PostCard = ({ PostData }: DataProps) => {
+const PostCard = async ({ PostData }: DataProps) => {
   const { id, title, url, createdAt, user, tags } = PostData; // 分割代入
+
+  // 現在のユーザーがこの投稿をブックマークしているかチェック
+  const session = await auth();
+  const userId = session?.user?.id;
+  const existingBookmark = userId
+    ? !!(await prisma.bookmark.findFirst({ where: { userId, postId: id } }))
+    : false;
+
   return (
     <Link href={`/post/${id}`} className="text-blue-500">
       <Card>
@@ -38,11 +49,14 @@ const PostCard = ({ PostData }: DataProps) => {
         <CardContent>{url}</CardContent>
 
         <CardFooter className="flex flex-wrap gap-2 mb-2">
-          {tags?.map((tag) => (
-            <span key={tag.id} className="tag">
-              {tag.name}
-            </span>
-          ))}
+          <div className="flex justify-end items-center gap-2">
+            {tags?.map((tag) => (
+              <span key={tag.id} className="tag">
+                {tag.name}
+              </span>
+            ))}
+            <BookmarkButton postId={id} initialBookmarked={existingBookmark} />
+          </div>
         </CardFooter>
       </Card>
     </Link>

@@ -1,10 +1,11 @@
 import { getPostDetail } from "@/lib/posts";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { BookmarkIcon } from "lucide-react";
 import Link from "next/link";
 import dayjs from "dayjs";
+import { BookmarkButton } from "@/components/BookmarkButton";
+import { auth } from "@/lib/auth";
+import { prisma } from "@/lib/prismaClient";
 
 // 投稿の詳細内容を表示するページ
 export default async function PostDetail({
@@ -13,6 +14,13 @@ export default async function PostDetail({
   params: { id: string };
 }) {
   const { id } = await params;
+  const session = await auth();
+
+  // 現在のユーザーがこの投稿をブックマークしているかチェック
+  const userId = session?.user?.id;
+  const existingBookmark = userId
+    ? !!(await prisma.bookmark.findFirst({ where: { userId, postId: id } }))
+    : false;
 
   const post = await getPostDetail(id);
 
@@ -57,15 +65,8 @@ export default async function PostDetail({
             <h3 className="font-semibold mb-2">Memo</h3>
             <p className="text-sm text-muted-foreground line-clamp-3">{memo}</p>
           </div>
-          <div className="flex items-center gap-2">
-            <Button
-              variant="ghost"
-              size="sm"
-              className="text-muted-foreground ml-auto"
-            >
-              <BookmarkIcon className="w-4 h-4 mr-2" />
-              保存
-            </Button>
+          <div className="flex justify-end items-center gap-2">
+            <BookmarkButton postId={id} initialBookmarked={existingBookmark} />
           </div>
         </CardContent>
 
