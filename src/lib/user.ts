@@ -7,25 +7,15 @@ export async function getMyPosts(userId: string) {
     include: { tags: true, user: true }, // tagsとuserを含めて取得
   });
 
-  const formattedPosts: Post[] = myPosts.map((post) => ({
-    id: post.id,
-    title: post.title,
-    url: post.url,
-    memo: post.memo ?? undefined,
-    tags: post.tags.map((tag) => ({ id: tag.id, name: tag.name })),
-    user: {
-      id: post.user.id,
-      name: post.user.name ?? "Unknown",
-      image: post.user.image ?? "Unknown",
-      email: post.user.email ?? "Unknown",
-      createdAt: post.user.createdAt.toISOString(),
-      updatedAt: post.user.updatedAt.toISOString(),
-    },
-    published: post.published,
-    createdAt: post.createdAt.toISOString(),
-    updatedAt: post.updatedAt.toISOString(),
+  const formattedPosts: Post[] = myPosts.map((post: Post) => post);
+  return posts;
+}
 
-    // ここでtagsとuserを展開して新しいプロパティを追加することも可能;
-  }));
-  return formattedPosts;
+// bookmark記事を取得
+export async function getMyBookmark() {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/bookmark`);
+  if (!res.ok) throw new Error("Failed to fetch posts");
+  const bookmarks = await res.json();
+  const posts: Post[] = bookmarks.map((bookmark: Bookmark) => bookmark.post);
+  return posts;
 }
