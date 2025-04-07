@@ -26,3 +26,8 @@ export interface User {
   createdAt: string;
   updatedAt: string;
 }
+export interface Bookmark {
+  id: string;
+  createdAt: string;
+  post: Post[];
+}
