@@ -11,7 +11,7 @@ const PostList = ({ PostAllData }: DataAllProps) => {
   return (
     <div className="grid lg:grid-cols-3 px-4 py-4 gap-4">
       {PostAllData.map((Post: Post) => (
-        <PostCard key={Post.id} PostData={Post} /> // map関数ではkeyを指定恣意ないとエラーになる
+        <PostCard key={Post.id} PostData={Post} /> // map関数ではkeyを指定しないとエラーになる
       ))}
     </div>
   );
