@@ -1,13 +1,12 @@
-import { prisma } from "@/lib/prismaClient";
-import { Post } from "@/types/types";
+import { Bookmark, Post } from "@/types/types";
 
-export async function getMyPosts(userId: string) {
-  const myPosts = await prisma.post.findMany({
-    where: { userId: userId },
-    include: { tags: true, user: true }, // tagsとuserを含めて取得
+export async function getMyPosts() {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/my-posts`, {
+    cache: "no-store",
   });
-
-  const formattedPosts: Post[] = myPosts.map((post: Post) => post);
+  if (!res.ok) throw new Error("Failed to fetch posts");
+  const myPosts = await res.json();
+  const posts: Post[] = myPosts.map((post: Post) => post);
   return posts;
 }
 
