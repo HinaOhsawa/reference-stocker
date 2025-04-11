@@ -1,5 +1,21 @@
 import { Bookmark, Post } from "@/types/types";
 
+// ユーザー情報を取得
+export async function getUser(userId: string) {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/user/?id=${userId}`,
+    {
+      cache: "no-store",
+    }
+  );
+  if (!res.ok) {
+    throw new Error("Failed to fetch user");
+  }
+  const user = await res.json();
+  return user;
+}
+
+// 自分の投稿を取得
 export async function getMyPosts() {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/my-posts`, {
     cache: "no-store",
