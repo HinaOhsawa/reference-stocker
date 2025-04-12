@@ -4,7 +4,6 @@ import Google from "next-auth/providers/google";
 import { prisma } from "@/lib/prismaClient";
 
 export const authConfig = {
-  session: { strategy: "jwt" },
   // secret: process.env.AUTH_SECRET,
   // theme: {
   //   logo: "https://next-auth.js.org/img/logo/logo-sm.png",
