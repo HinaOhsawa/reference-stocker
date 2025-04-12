@@ -3,6 +3,7 @@ import UpdateUsernameForm from "@/components/UpdateUsernameForm";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { getUser } from "@/lib/user";
 import { auth } from "@/lib/auth";
+import AvatarForm from "@/components/AvatarForm";
 
 export default async function UserSettingsPage() {
   const session = await auth();
@@ -22,6 +23,8 @@ export default async function UserSettingsPage() {
       <Avatar className="w-8 h-8">
         <AvatarImage src={user.image} alt="@username" />
       </Avatar>
+      <AvatarForm userId={user.id} />
+
       <div className="flex gap-4">
         <p className="mb-4">ユーザー名: {user.name}</p>
         <UpdateUsernameForm userId={user.id} />
