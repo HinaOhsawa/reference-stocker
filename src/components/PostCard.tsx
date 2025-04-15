@@ -10,10 +10,11 @@ import {
 import Link from "next/link";
 import { Post } from "@/types/types";
 import dayjs from "dayjs";
-import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { BookmarkButton } from "./BookmarkButton";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prismaClient";
+import { User } from "lucide-react";
 
 interface DataProps {
   PostData: Post;
@@ -40,7 +41,10 @@ const PostCard = async ({ PostData }: DataProps) => {
             {" "}
             <div className="flex items-center gap-4">
               <Avatar className="w-8 h-8">
-                <AvatarImage src={user.image} alt="@username" />
+                <AvatarImage src={user.image ?? undefined} alt="@username" />
+                <AvatarFallback className="bg-gray-100 text-gray-400">
+                  <User size={40} />
+                </AvatarFallback>
               </Avatar>
               <p>{user.name}</p>
             </div>
