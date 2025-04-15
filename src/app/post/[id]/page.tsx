@@ -1,11 +1,14 @@
-import { getPostDetail } from "@/lib/posts";
-import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import { getPostDetail, getRelatedPosts } from "@/lib/posts";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import Link from "next/link";
 import dayjs from "dayjs";
 import { BookmarkButton } from "@/components/BookmarkButton";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prismaClient";
+// import RelatedPosts from "@/components/RelatedPosts";
+import PostList from "@/components/PostList";
+import { User } from "lucide-react";
 
 // 投稿の詳細内容を表示するページ
 export default async function PostDetail({
@@ -27,13 +30,24 @@ export default async function PostDetail({
   if (!post) return <p>Post not found</p>;
 
   const { title, url, createdAt, user, memo, tags } = post;
+  const tagIds = tags?.map((tag) => tag.id);
+  const data = await getRelatedPosts(id, tagIds ?? []);
+  const relatedPosts = (data ?? []).map(({ user, tags, ...rest }) => ({
+    ...rest,
+    user,
+    tags,
+    // memo: rest.memo ?? undefined,
+  }));
   return (
     <div className="max-w-4xl mx-auto px-4">
       <Card className="border-none shadow-none block">
         <CardHeader className="px-0 space-y-4">
           <div className="flex items-center gap-4">
             <Avatar className="w-12 h-12">
-              <AvatarImage src={user.image} alt="@username" />
+              <AvatarImage src={user.image ?? undefined} alt="@username" />
+              <AvatarFallback className="bg-gray-100 text-gray-400">
+                <User size={40} />
+              </AvatarFallback>
             </Avatar>
             <div>
               <p className="font-semibold">{user.name}</p>
@@ -69,7 +83,10 @@ export default async function PostDetail({
             <BookmarkButton postId={id} initialBookmarked={existingBookmark} />
           </div>
         </CardContent>
-
+        <>
+          <h2 className="text-2xl font-semibold">関連記事</h2>
+          <PostList PostAllData={relatedPosts} />
+        </>
         <Link
           href={"/"}
           className="bg-blue-500 text-white py-2 px-4 rounded-md w-fit"

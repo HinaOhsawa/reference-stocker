@@ -1,4 +1,5 @@
 import { Post } from "@/types/types";
+import { prisma } from "@/lib/prismaClient";
 
 // すべてのpostを取得
 // export async function getAllPosts() {
@@ -41,4 +42,54 @@ export async function searchPosts(keyword: string) {
 
   const posts: Post[] = await res.json();
   return posts;
+}
+
+// 関連記事取得関数
+export async function getRelatedPosts(postId: string, tagIds: string[]) {
+  const relatedPosts = await prisma.post.findMany({
+    where: {
+      tags: {
+        some: {
+          id: { in: tagIds },
+        },
+      },
+      id: {
+        not: postId, // 自分自身は除外
+      },
+    },
+    take: 5, // 最大5件
+    orderBy: {
+      createdAt: "desc",
+    },
+    include: {
+      tags: true,
+      user: true,
+    },
+  });
+
+  return relatedPosts;
+}
+export async function getPostWithRelated(postId: string) {
+  const post = await prisma.post.findUnique({
+    where: { id: postId },
+    include: { tags: true },
+  });
+
+  if (!post) return null;
+
+  const tagIds = post.tags.map((tag) => tag.id);
+
+  const relatedData = await getRelatedPosts(post.id, tagIds);
+
+  if (!relatedData) {
+    return { post, relatedPosts: [] }; // 失敗した場合は空の配列を返す
+  }
+  const relatedPosts = relatedData;
+  // const relatedPosts = relatedData.map((post) => ({
+  //   ...post,
+  //   tags: post.tags,
+  //   user: post.user,
+  // }));
+
+  return { post, relatedPosts };
 }
