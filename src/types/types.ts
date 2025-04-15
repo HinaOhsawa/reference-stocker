@@ -2,32 +2,32 @@ export interface Post {
   id: string;
   title: string;
   url: string;
-  memo: string | undefined;
+  memo: string | undefined | null;
   // userId: string;
   published: boolean;
   user: User;
-  createdAt: string;
-  updatedAt: string;
+  createdAt: Date;
+  updatedAt: Date;
   tags?: Tag[];
 }
 
 export interface Tag {
   id: string;
   name: string;
-  createdAt: string;
-  updatedAt: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface User {
   id: string;
-  name: string;
-  email: string;
-  image: string;
-  createdAt: string;
-  updatedAt: string;
+  name: string | null;
+  email: string | null;
+  image: string | null;
+  createdAt: Date;
+  updatedAt: Date;
 }
 export interface Bookmark {
   id: string;
-  createdAt: string;
+  createdAt: Date;
   post: Post[];
 }
