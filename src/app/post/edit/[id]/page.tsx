@@ -16,7 +16,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useEffect, useState } from "react";
-import { getPostDetail } from "@/lib/posts";
+import { getPostWithRelated } from "@/lib/posts";
 import { updatePost } from "@/app/actions/updatePostAction";
 
 // タグのスキーマ
@@ -63,8 +63,17 @@ export default function EditPostPage({ params }: { params: { id: string } }) {
   useEffect(() => {
     const fetchPost = async () => {
       try {
-        const post = await getPostDetail(id);
-        form.reset(post); // フォームにデータをセット
+        const result = await getPostWithRelated(id);
+        if (!result) return <p>Post not found</p>;
+        const post = result?.post;
+        // フォームにデータをセット
+        form.reset({
+          title: post.title,
+          url: post.url,
+          memo: post.memo ?? undefined,
+          tags: post.tags?.map((tag) => ({ name: tag.name })) ?? [],
+          published: post.published,
+        });
 
         //post.tags の各タグから name プロパティを取り出し、それを配列として setTags にセット
         setTags(post.tags?.map((tag) => tag.name) ?? []); // タグをセット

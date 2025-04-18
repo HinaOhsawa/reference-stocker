@@ -1,6 +1,6 @@
 import MyPostCard from "@/components/MyPostCard";
 import { auth } from "@/lib/auth";
-import { getMyPosts } from "@/lib/user";
+import { fetchMyPosts } from "@/lib/user";
 import Link from "next/link";
 
 export default async function MyPage() {
@@ -8,7 +8,7 @@ export default async function MyPage() {
   if (!session || !session.user?.id) {
     throw new Error("Unauthorized");
   }
-  const myPosts = await getMyPosts();
+  const myPosts = await fetchMyPosts();
 
   if (!myPosts || myPosts.length === 0) {
     return <p>まだ投稿はありません。</p>;

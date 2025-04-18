@@ -1,8 +1,8 @@
 import PostList from "@/components/PostList";
-import { getMyBookmark } from "@/lib/user";
+import { fetchMyBookmark } from "@/lib/user";
 
 export default async function Bookmark() {
-  const BookmarkPosts = await getMyBookmark();
+  const BookmarkPosts = await fetchMyBookmark();
   // console.log(BookmarkPosts);
   return (
     <div className="">

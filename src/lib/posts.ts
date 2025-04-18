@@ -1,5 +1,8 @@
 import { Post } from "@/types/types";
 import { prisma } from "@/lib/prismaClient";
+// =======================================
+// API経由する関数
+// =======================================
 
 // すべてのpostを取得
 // export async function getAllPosts() {
@@ -8,7 +11,7 @@ import { prisma } from "@/lib/prismaClient";
 //   return res.json();
 // }
 
-export async function getPostsPaginated(page: number, perPage: number) {
+export async function fetchPostsPaginated(page: number, perPage: number) {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/posts/?page=${page}&pageSize=${perPage}`,
     {
@@ -20,7 +23,7 @@ export async function getPostsPaginated(page: number, perPage: number) {
 }
 
 // Idを使ってpostの詳細を取得
-export async function getPostDetail(id: string) {
+export async function fetchPostDetail(id: string) {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/posts/${id}`, {
     cache: "no-store",
   });
@@ -43,6 +46,10 @@ export async function searchPosts(keyword: string) {
   const posts: Post[] = await res.json();
   return posts;
 }
+
+// =======================================
+// Prisma直アクセスする関数
+// =======================================
 
 // 関連記事取得関数
 export async function getRelatedPosts(postId: string, tagIds: string[]) {

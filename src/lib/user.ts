@@ -1,7 +1,11 @@
 import { Bookmark, Post } from "@/types/types";
 
+// =======================================
+// API経由する関数
+// =======================================
+
 // ユーザー情報を取得
-export async function getUser(userId: string) {
+export async function fetchUser(userId: string) {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/user/?id=${userId}`,
     {
@@ -16,7 +20,7 @@ export async function getUser(userId: string) {
 }
 
 // 自分の投稿を取得
-export async function getMyPosts() {
+export async function fetchMyPosts() {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/my-posts`, {
     cache: "no-store",
   });
@@ -27,7 +31,7 @@ export async function getMyPosts() {
 }
 
 // bookmark記事を取得
-export async function getMyBookmark() {
+export async function fetchMyBookmark() {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/my-bookmark`);
   if (!res.ok) throw new Error("Failed to fetch posts");
   const bookmarks = await res.json();
