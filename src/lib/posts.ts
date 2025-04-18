@@ -69,27 +69,23 @@ export async function getRelatedPosts(postId: string, tagIds: string[]) {
 
   return relatedPosts;
 }
+
+// 記事詳細と関連する記事を取得
 export async function getPostWithRelated(postId: string) {
   const post = await prisma.post.findUnique({
     where: { id: postId },
-    include: { tags: true },
+    include: { tags: true, user: true },
   });
 
   if (!post) return null;
 
   const tagIds = post.tags.map((tag) => tag.id);
 
-  const relatedData = await getRelatedPosts(post.id, tagIds);
+  const relatedPosts = await getRelatedPosts(post.id, tagIds);
 
-  if (!relatedData) {
+  if (!relatedPosts) {
     return { post, relatedPosts: [] }; // 失敗した場合は空の配列を返す
   }
-  const relatedPosts = relatedData;
-  // const relatedPosts = relatedData.map((post) => ({
-  //   ...post,
-  //   tags: post.tags,
-  //   user: post.user,
-  // }));
 
   return { post, relatedPosts };
 }

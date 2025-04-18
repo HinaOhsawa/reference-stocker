@@ -1,4 +1,4 @@
-import { getPostDetail, getRelatedPosts } from "@/lib/posts";
+import { getPostWithRelated } from "@/lib/posts";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 // import Link from "next/link";
@@ -6,10 +6,10 @@ import dayjs from "dayjs";
 import { BookmarkButton } from "@/components/BookmarkButton";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prismaClient";
-// import RelatedPosts from "@/components/RelatedPosts";
-import PostList from "@/components/PostList";
 import { User } from "lucide-react";
 import LinkCard from "@/components/LinkCard";
+import RelatedPosts from "@/components/RelatedPosts";
+import { Post } from "@/types/types";
 
 // 投稿の詳細内容を表示するページ
 export default async function PostDetail({
@@ -26,19 +26,13 @@ export default async function PostDetail({
     ? !!(await prisma.bookmark.findFirst({ where: { userId, postId: id } }))
     : false;
 
-  const post = await getPostDetail(id);
-
-  if (!post) return <p>Post not found</p>;
+  // 投稿の詳細を取得
+  const result = await getPostWithRelated(id);
+  if (!result) return <p>Post not found</p>;
+  const post: Post = result?.post;
 
   const { title, url, createdAt, user, memo, tags } = post;
-  const tagIds = tags?.map((tag) => tag.id);
-  const data = await getRelatedPosts(id, tagIds ?? []);
-  const relatedPosts = (data ?? []).map(({ user, tags, ...rest }) => ({
-    ...rest,
-    user,
-    tags,
-    // memo: rest.memo ?? undefined,
-  }));
+
   return (
     <div className="max-w-4xl mx-auto px-4">
       <Card className="p-6 rounded-2xl shadow-md border bg-white">
@@ -77,14 +71,8 @@ export default async function PostDetail({
           </div>
         </CardContent>
       </Card>
-      <h2 className="mt-8 text-2xl font-semibold">関連記事</h2>
-      <PostList PostAllData={relatedPosts} />
-      {/* <Link
-        href={"/"}
-        className="bg-blue-500 text-white py-2 px-4 rounded-md w-fit"
-      >
-        戻る
-      </Link> */}
+
+      <RelatedPosts postId={id} />
     </div>
   );
 }
