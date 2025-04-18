@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { toggleBookmark } from "@/app/actions/bookmarkAction";
 import { BookmarkCheck, BookmarkIcon } from "lucide-react";
 import { Button } from "./ui/button";
@@ -8,7 +8,12 @@ import { Button } from "./ui/button";
 type Props = { postId: string; initialBookmarked: boolean };
 
 export function BookmarkButton({ postId, initialBookmarked }: Props) {
-  const [bookmarked, setBookmarked] = useState(initialBookmarked);
+  // 親から受け取った initialBookmarked を反映する
+  const [bookmarked, setBookmarked] = useState(Boolean(initialBookmarked));
+  useEffect(() => {
+    setBookmarked(Boolean(initialBookmarked));
+  }, [initialBookmarked]);
+
   const [isPending, startTransition] = useTransition();
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
