@@ -28,7 +28,7 @@ export async function getMyPosts() {
 
 // bookmark記事を取得
 export async function getMyBookmark() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/bookmark`);
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/my-bookmark`);
   if (!res.ok) throw new Error("Failed to fetch posts");
   const bookmarks = await res.json();
   const posts: Post[] = bookmarks.map((bookmark: Bookmark) => bookmark.post);
