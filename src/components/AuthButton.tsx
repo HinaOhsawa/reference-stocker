@@ -13,7 +13,7 @@ import SignOut from "./SignOut";
 import Link from "next/link";
 import { fetchUser } from "@/lib/user";
 import { User } from "@/types/types";
-import { Settings, User as UserIcon } from "lucide-react";
+import { Settings, SquareUserRound, User as UserIcon } from "lucide-react";
 
 export default async function AuthButton() {
   const session = await auth();
@@ -48,14 +48,17 @@ export default async function AuthButton() {
           </DropdownMenuLabel>
           <hr />
           <DropdownMenuItem>
-            <Link className="w-full flex justify-center p-2" href="/my-page">
-              <UserIcon />
+            <Link
+              className="w-full flex gap-2 justify-center p-2"
+              href="/my-page"
+            >
+              <SquareUserRound />
               マイページ
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem>
             <Link
-              className="w-full flex justify-center p-2"
+              className="w-full flex gap-2 justify-center p-2"
               href="/user-settings"
             >
               <Settings />
