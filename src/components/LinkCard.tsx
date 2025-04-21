@@ -26,7 +26,7 @@ export default function LinkCard({ url }: { url: string }) {
     <a href={data.url} target="_blank" rel="noopener noreferrer">
       <Card className="flex flex-col p-0 sm:flex-row overflow-hidden hover:shadow-md transition-shadow">
         {data.image ? (
-          <div className="relative w-full sm:w-1/3 h-48 sm:h-auto ">
+          <div className=" w-full sm:w-1/3 h-48 sm:h-auto ">
             <img
               src={data.image}
               alt={data.title}
@@ -34,7 +34,7 @@ export default function LinkCard({ url }: { url: string }) {
             />
           </div>
         ) : (
-          <div className="relative w-full sm:w-1/3 h-48 sm:h-auto w-full bg-gray-100 flex items-center justify-center text-gray-400 text-sm">
+          <div className="w-full sm:w-1/3 h-48 sm:h-auto w-full bg-gray-100 flex items-center justify-center text-gray-400 text-sm">
             No preview available
           </div>
         )}

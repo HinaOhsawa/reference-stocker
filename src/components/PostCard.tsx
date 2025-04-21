@@ -45,15 +45,14 @@ const PostCard = ({ PostData }: DataProps) => {
   };
 
   return (
-    <Card onClick={handleClick}>
+    <Card onClick={handleClick} className="cursor-pointer hover:bg-gray-50">
       <CardHeader>
-        <Link href={`/post/${id}`}>
+        <Link href={`/post/${id}`} className="hover:opacity-70 transition">
           <CardTitle>{title}</CardTitle>
         </Link>
         <small>{dayjs(createdAt).format("YYYY/MM/DD HH:mm")}</small>
 
         <CardDescription>
-          {" "}
           <div className="flex items-center gap-4">
             <Avatar className="w-8 h-8">
               <AvatarImage src={user.image ?? undefined} alt="@username" />
@@ -67,17 +66,17 @@ const PostCard = ({ PostData }: DataProps) => {
       </CardHeader>
       <CardContent>
         <LinkCard url={url} />
-      </CardContent>
-
-      <CardFooter className="flex flex-wrap gap-2 mb-2">
-        <div className="flex justify-end items-center gap-2">
+        <div className="mt-4 flex flex-wrap items-center gap-2 mb-2">
           {tags?.map((tag) => (
             <span key={tag.id} className="tag">
               {tag.name}
             </span>
           ))}
-          <BookmarkButton postId={id} initialBookmarked={bookmarked} />
         </div>
+      </CardContent>
+
+      <CardFooter className="flex flex-wrap justify-end gap-2">
+        <BookmarkButton postId={id} initialBookmarked={bookmarked} />
       </CardFooter>
     </Card>
   );

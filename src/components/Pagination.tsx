@@ -25,7 +25,7 @@ export default function Pagination({
   };
 
   return (
-    <ShadPagination>
+    <ShadPagination className="mt-4">
       <PaginationContent>
         {currentPage > 1 && (
           <PaginationItem>

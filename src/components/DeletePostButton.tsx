@@ -33,8 +33,8 @@ export default function DeletePostButton({ postId }: { postId: string }) {
 
       {showModal && (
         <div className="fixed inset-0 flex items-center justify-center ">
-          <div className="fixed inset-0 flex opacity-25 bg-black"></div>
-          <div className="bg-white p-6 rounded-lg shadow-lg z-10">
+          <div className="fixed inset-0 flex opacity-25 bg-black z-90"></div>
+          <div className="bg-white p-6 rounded-lg shadow-lg z-100">
             <h2 className="text-lg font-bold mb-4">本当に削除しますか？</h2>
             <div className="flex justify-between space-x-2">
               <Button

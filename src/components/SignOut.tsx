@@ -1,6 +1,7 @@
 import React from "react";
 import { Button } from "./ui/button";
 import { signOut } from "@/lib/auth";
+import { LogOut } from "lucide-react";
 
 export default function SignOut({
   ...props
@@ -17,6 +18,7 @@ export default function SignOut({
       }}
     >
       <Button variant="ghost" className="w-full p-0" {...props}>
+        <LogOut />
         ログアウト
       </Button>
     </form>

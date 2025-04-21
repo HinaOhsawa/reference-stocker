@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { Search } from "lucide-react";
 
 export default function SearchForm() {
   const [query, setQuery] = useState("");
@@ -13,19 +14,22 @@ export default function SearchForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="mb-4">
+    <form
+      onSubmit={handleSubmit}
+      className="flex items-center justify-end gap-1 mb-4"
+    >
       <input
         type="text"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
-        className="border rounded px-2 py-1"
+        className="border rounded-full px-3 py-1"
         placeholder="記事を検索"
       />
       <button
         type="submit"
-        className="ml-2 px-2 py-1 bg-blue-500 text-white rounded"
+        className="cursor-pointer px-2 py-2 bg-black text-white rounded-full hover:opacity-80 transition"
       >
-        検索
+        <Search width={16} height={16} />
       </button>
     </form>
   );

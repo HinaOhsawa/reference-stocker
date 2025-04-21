@@ -10,10 +10,16 @@ import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { auth } from "@/lib/auth";
 import SignIn from "./SignIn";
 import SignOut from "./SignOut";
+import Link from "next/link";
+import { fetchUser } from "@/lib/user";
+import { User } from "@/types/types";
+import { Settings, User as UserIcon } from "lucide-react";
 
 export default async function AuthButton() {
   const session = await auth();
   if (!session?.user) return <SignIn provider="" />;
+
+  const user: User = await fetchUser(session?.user?.id ?? "");
 
   return (
     <div className="flex gap-2 items-center">
@@ -21,28 +27,41 @@ export default async function AuthButton() {
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="relative w-8 h-8 rounded-full">
-            <Avatar className="w-8 h-8">
-              {session.user.image && (
-                <AvatarImage
-                  src={session.user.image}
-                  alt={session.user.name ?? ""}
-                />
+            <Avatar className="w-8 h-8 border-0">
+              {user.image && (
+                <AvatarImage src={user.image} alt={user.name ?? ""} />
               )}
-              <AvatarFallback>{session.user.email}</AvatarFallback>
+              <AvatarFallback className="bg-gray-100 text-gray-400">
+                <UserIcon size={30} />
+              </AvatarFallback>
             </Avatar>
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-56" align="end" forceMount>
           <DropdownMenuLabel className="font-normal">
             <div className="flex flex-col space-y-1">
-              <p className="text-sm font-medium leading-none">
-                {session.user.name}
-              </p>
+              <p className="text-sm font-medium leading-none">{user.name}</p>
               <p className="text-xs leading-none text-muted-foreground">
-                {session.user.email}
+                {user.email}
               </p>
             </div>
           </DropdownMenuLabel>
+          <hr />
+          <DropdownMenuItem>
+            <Link className="w-full flex justify-center p-2" href="/my-page">
+              <UserIcon />
+              マイページ
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem>
+            <Link
+              className="w-full flex justify-center p-2"
+              href="/user-settings"
+            >
+              <Settings />
+              ユーザー設定
+            </Link>
+          </DropdownMenuItem>
           <DropdownMenuItem>
             <SignOut />
           </DropdownMenuItem>
