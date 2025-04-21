@@ -1,7 +1,14 @@
 import MyPostCard from "@/components/MyPostCard";
+import { Card } from "@/components/ui/card";
 import { auth } from "@/lib/auth";
-import { fetchMyPosts } from "@/lib/user";
+import { fetchMyBookmark, fetchMyPosts, fetchUser } from "@/lib/user";
 import Link from "next/link";
+import { ChevronRight, Pen, Settings } from "lucide-react";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import { BookmarkCheck, FileText } from "lucide-react";
+import PostCard from "@/components/PostCard";
 
 export default async function MyPage() {
   const session = await auth();
@@ -9,20 +16,105 @@ export default async function MyPage() {
     throw new Error("Unauthorized");
   }
   const myPosts = await fetchMyPosts();
+  const BookmarkPosts = await fetchMyBookmark();
 
-  if (!myPosts || myPosts.length === 0) {
-    return <p>まだ投稿はありません。</p>;
+  const userId = await session?.user?.id;
+
+  const user = await fetchUser(userId);
+
+  if (!user || !userId) {
+    return <p>ログインしてください</p>;
   }
+
   return (
     <div>
       <h2 className="text-xl font-bold">マイページ</h2>
-      <h3>投稿一覧</h3>
-      <Link href="/my-page/bookmark">ブックマーク</Link>
-      <ul className="grid px-4 py-4 gap-4">
-        {myPosts.map((Post) => (
-          <MyPostCard key={Post.id} PostData={Post} />
-        ))}
-      </ul>
+      <h3 className="text-lg font-bold mt-6">ユーザー情報</h3>
+      <Card className="mt-2 flex items-center gap-1">
+        <Avatar className="w-16 h-16">
+          <AvatarImage src={user.image} alt="@username" />
+        </Avatar>
+        <p className="">{user.name}</p>
+        <p className="text-gray-500">{user.email}</p>
+        <Link
+          href="/user-settings"
+          className={cn(
+            buttonVariants({ variant: "secondary", size: "sm" }),
+            " mt-2"
+          )}
+        >
+          <Settings />
+          ユーザー設定
+        </Link>
+      </Card>
+
+      <div className="mt-4 flex items-center flex-wrap gap-2">
+        <Link
+          href="/my-page/posts"
+          className={cn(buttonVariants({ variant: "secondary", size: "sm" }))}
+        >
+          <FileText />
+          自分の投稿
+        </Link>
+        <Link
+          href="/my-page/bookmark"
+          className={cn(buttonVariants({ variant: "secondary", size: "sm" }))}
+        >
+          <BookmarkCheck />
+          ブックマーク
+        </Link>
+        <Link
+          href="/post/create"
+          className={cn(buttonVariants({ variant: "default", size: "sm" }))}
+        >
+          <Pen />
+          新規作成
+        </Link>
+      </div>
+
+      <h3 className="text-lg font-bold mt-8">自分の投稿</h3>
+      {!myPosts || myPosts.length === 0 ? (
+        <p className="mt-2">まだ投稿はありません。</p>
+      ) : (
+        <>
+          <ul className="grid mt-2 gap-4">
+            {myPosts.slice(0, 5).map((Post) => (
+              <MyPostCard key={Post.id} PostData={Post} />
+            ))}
+          </ul>
+          <div className="m-6 flex justify-center items-center">
+            <Link
+              className="flex items-center text-gray-500 opacity-100 hover:opacity-70 transition"
+              href="/my-page/posts"
+            >
+              すべての投稿（{myPosts.length}件）
+              <ChevronRight />
+            </Link>
+          </div>
+        </>
+      )}
+
+      <h3 className="text-lg font-bold mt-8">ブックマーク</h3>
+      {!BookmarkPosts || BookmarkPosts.length === 0 ? (
+        <p className="mt-2">まだブックマークはありません。</p>
+      ) : (
+        <>
+          <ul className="grid mt-2 gap-4">
+            {BookmarkPosts.slice(0, 5).map((Post) => (
+              <PostCard key={Post.id} PostData={Post} />
+            ))}
+          </ul>
+          <div className="m-6 flex justify-center items-center">
+            <Link
+              className="flex items-center text-gray-500 opacity-100 hover:opacity-70 transition"
+              href="/my-page/bookmark"
+            >
+              すべてのブックマーク（{BookmarkPosts.length}件）
+              <ChevronRight />
+            </Link>
+          </div>
+        </>
+      )}
     </div>
   );
 }

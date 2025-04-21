@@ -6,8 +6,15 @@ export default async function Bookmark() {
   // console.log(BookmarkPosts);
   return (
     <div className="">
-      <h2 className="text-xl font-bold ">ブックマーク一覧</h2>
-      <PostList PostAllData={BookmarkPosts} />
+      <h2 className="text-xl font-bold ">
+        ブックマーク
+        <small className="">（{BookmarkPosts.length}件）</small>
+      </h2>
+      {!BookmarkPosts || BookmarkPosts.length === 0 ? (
+        <p className="mt-2">まだブックマークはありません。</p>
+      ) : (
+        <PostList PostAllData={BookmarkPosts} />
+      )}
     </div>
   );
 }
