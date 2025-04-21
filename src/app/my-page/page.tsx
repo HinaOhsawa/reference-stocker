@@ -1,7 +1,7 @@
 import MyPostCard from "@/components/MyPostCard";
 import { Card } from "@/components/ui/card";
 import { auth } from "@/lib/auth";
-import { fetchMyBookmark, fetchMyPosts, fetchUser } from "@/lib/user";
+import { getMyBookmark, getMyPosts, fetchUser } from "@/lib/user";
 import Link from "next/link";
 import { ChevronRight, Pen, Settings } from "lucide-react";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
@@ -15,8 +15,8 @@ export default async function MyPage() {
   if (!session || !session.user?.id) {
     throw new Error("Unauthorized");
   }
-  const myPosts = await fetchMyPosts();
-  const BookmarkPosts = await fetchMyBookmark();
+  const { myPosts } = await getMyPosts();
+  const { bookmarkPosts } = await getMyBookmark();
 
   const userId = await session?.user?.id;
 
@@ -95,12 +95,12 @@ export default async function MyPage() {
       )}
 
       <h3 className="text-lg font-bold mt-8">ブックマーク</h3>
-      {!BookmarkPosts || BookmarkPosts.length === 0 ? (
+      {!bookmarkPosts || bookmarkPosts.length === 0 ? (
         <p className="mt-2">まだブックマークはありません。</p>
       ) : (
         <>
           <ul className="grid mt-2 gap-4">
-            {BookmarkPosts.slice(0, 5).map((Post) => (
+            {bookmarkPosts.slice(0, 5).map((Post) => (
               <PostCard key={Post.id} PostData={Post} />
             ))}
           </ul>
@@ -109,7 +109,7 @@ export default async function MyPage() {
               className="flex items-center text-gray-500 opacity-100 hover:opacity-70 transition"
               href="/my-page/bookmark"
             >
-              すべてのブックマーク（{BookmarkPosts.length}件）
+              すべてのブックマーク（{bookmarkPosts.length}件）
               <ChevronRight />
             </Link>
           </div>

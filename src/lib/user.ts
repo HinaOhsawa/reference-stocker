@@ -1,4 +1,6 @@
 import { Bookmark, Post } from "@/types/types";
+import { prisma } from "@/lib/prismaClient";
+import { auth } from "@/lib/auth";
 
 // =======================================
 // API経由する関数
@@ -37,4 +39,85 @@ export async function fetchMyBookmark() {
   const bookmarks = await res.json();
   const posts: Post[] = bookmarks.map((bookmark: Bookmark) => bookmark.post);
   return posts;
+}
+
+// =======================================
+// Prisma直アクセスする関数
+// =======================================
+
+// bookmark記事を取得
+export async function getMyBookmark(page = 1, pageSize = 10) {
+  const session = await auth();
+  const userId = session?.user?.id;
+  if (!userId) {
+    throw new Error("Unauthorized");
+  }
+
+  const skip = (page - 1) * pageSize;
+
+  const [bookmarks, total] = await Promise.all([
+    prisma.bookmark.findMany({
+      where: {
+        userId,
+        post: {
+          published: true,
+        },
+      },
+      include: {
+        post: {
+          include: {
+            user: true,
+            tags: true,
+          },
+        },
+      },
+      skip,
+      take: pageSize,
+      orderBy: { createdAt: "desc" },
+    }),
+    prisma.bookmark.count({
+      where: {
+        userId,
+        post: {
+          published: true,
+        },
+      },
+    }),
+  ]);
+
+  const bookmarkPosts = bookmarks.map((b) => b.post);
+
+  return {
+    bookmarkPosts,
+    totalPages: Math.ceil(total / pageSize),
+  };
+}
+
+// 自分の投稿を取得
+export async function getMyPosts(page = 1, pageSize = 10) {
+  const session = await auth();
+  const userId = session?.user?.id;
+  if (!userId) {
+    throw new Error("Unauthorized");
+  }
+
+  const skip = (page - 1) * pageSize;
+
+  const [myPosts, total] = await Promise.all([
+    prisma.post.findMany({
+      where: { userId },
+      include: {
+        user: true,
+        tags: true,
+      },
+      orderBy: { createdAt: "desc" },
+      skip,
+      take: pageSize,
+    }),
+    prisma.post.count({
+      where: { userId },
+    }),
+  ]);
+
+  return { myPosts, totalPages: Math.ceil(total / pageSize) };
 }
