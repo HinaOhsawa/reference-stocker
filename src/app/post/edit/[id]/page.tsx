@@ -1,47 +1,13 @@
 "use client";
-import { TagInput } from "@/components/TagInput";
-import { Button } from "@/components/ui/button";
-import { Switch } from "@/components/ui/switch";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useEffect, useState } from "react";
 import { fetchPostDetail } from "@/lib/posts";
 import { updatePost } from "@/app/actions/updatePostAction";
-
-// タグのスキーマ
-const tagSchema = z.object({
-  name: z.string().min(1, "タグ名は必須です"), // nameの型を指定
-});
-
-// バリデーション Zod のスキーマ定義
-export const formSchema = z.object({
-  title: z
-    .string()
-    .min(2, { message: "タイトルは2文字以上で入力してください。" })
-    .max(50, { message: "本文は50文字以内で入力してください。" }),
-  url: z
-    .string()
-    .url({ message: "URLの形式が正しくありません。" })
-    .max(100, { message: "URLは100文字以内で入力してください。" }),
-  memo: z
-    .string()
-    .max(200, { message: "本文は200文字以内で入力してください。" })
-    .optional(),
-  tags: z.array(tagSchema).optional(),
-  // tags: z.array(z.string()).optional(),
-  published: z.boolean(),
-});
+import PostForm from "@/components/PostForm";
+import { formSchema } from "@/lib/validations/postSchema";
 
 export default function EditPostPage({ params }: { params: { id: string } }) {
   const { id } = params;
@@ -71,7 +37,7 @@ export default function EditPostPage({ params }: { params: { id: string } }) {
           title: post.title,
           url: post.url,
           memo: post.memo ?? undefined,
-          tags: post.tags?.map((tag) => ({ name: tag.name })) ?? [],
+          tags: post.tags?.map((tag) => tag.name) ?? [],
           published: post.published,
         });
 
@@ -93,113 +59,15 @@ export default function EditPostPage({ params }: { params: { id: string } }) {
 
   return (
     <>
-      {" "}
       <h2 className="text-xl font-bold">新しい記事を作成</h2>
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="mt-6 space-y-3 max-w-4xl mx-auto"
-        >
-          <FormField // タイトル
-            control={form.control}
-            name="title"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="font-bold">タイトル</FormLabel>
-                <FormControl>
-                  <Input placeholder="タイトル" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField // URL
-            control={form.control}
-            name="url"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="font-bold">URL</FormLabel>
-                <FormControl>
-                  <Textarea
-                    placeholder="URL"
-                    className="resize-none"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField // メモ
-            control={form.control}
-            name="memo"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="font-bold">メモ</FormLabel>
-                <FormControl>
-                  <Textarea
-                    placeholder="メモ"
-                    className="resize-none"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField // タグ
-            control={form.control}
-            name="tags"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="font-bold">タグ</FormLabel>
-                <FormControl>
-                  <TagInput
-                    placeholder="タグを編集"
-                    tags={tags}
-                    setTags={setTags}
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField // 公開設定
-            control={form.control}
-            name="published"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className="font-bold">公開</FormLabel>
-                <FormControl>
-                  <div className="flex items-center gap-2 justify-between">
-                    <p className="text-sm text-muted-foreground">
-                      {isPublished
-                        ? "記事を公開します"
-                        : "下書きとして保存します"}
-                    </p>
-                    <Switch
-                      checked={field.value}
-                      onCheckedChange={(value) => {
-                        field.onChange(value);
-                        setIsPublished(value);
-                      }}
-                    />
-                  </div>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <Button className="font-bold  mt-4" type="submit">
-            確定
-          </Button>
-        </form>
-      </Form>
+      <PostForm
+        form={form}
+        onSubmit={onSubmit}
+        tags={tags}
+        setTags={setTags}
+        isPublished={isPublished}
+        setIsPublished={setIsPublished}
+      />
     </>
   );
 }

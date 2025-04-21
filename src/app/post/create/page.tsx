@@ -1,40 +1,11 @@
 "use client";
 import { createPost } from "@/app/actions/createPostAction";
-import { TagInput } from "@/components/TagInput";
-import { Button } from "@/components/ui/button";
-import { Switch } from "@/components/ui/switch";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useState } from "react";
-
-// バリデーション Zod のスキーマ定義
-export const formSchema = z.object({
-  title: z
-    .string()
-    .min(2, { message: "タイトルは2文字以上で入力してください。" })
-    .max(50, { message: "本文は50文字以内で入力してください。" }),
-  url: z
-    .string()
-    .url({ message: "URLの形式が正しくありません。" })
-    .max(100, { message: "URLは100文字以内で入力してください。" }),
-  memo: z
-    .string()
-    .max(200, { message: "本文は200文字以内で入力してください。" })
-    .optional(),
-  tags: z.array(z.string()).optional(),
-  published: z.boolean(),
-});
+import { formSchema } from "@/lib/validations/postSchema";
+import PostForm from "@/components/PostForm";
 
 const CreatePostPage = () => {
   const [tags, setTags] = useState<string[]>([]);
@@ -61,7 +32,15 @@ const CreatePostPage = () => {
   return (
     <>
       <h2 className="text-xl font-bold">新しい記事を作成</h2>
-      <Form {...form}>
+      <PostForm
+        form={form}
+        onSubmit={onSubmit}
+        tags={tags}
+        setTags={setTags}
+        isPublished={isPublished}
+        setIsPublished={setIsPublished}
+      />
+      {/* <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
           className="mt-6 space-y-3 max-w-4xl mx-auto "
@@ -160,7 +139,7 @@ const CreatePostPage = () => {
             確定
           </Button>
         </form>
-      </Form>
+      </Form> */}
     </>
   );
 };

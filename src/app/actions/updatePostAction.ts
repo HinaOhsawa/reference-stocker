@@ -1,7 +1,7 @@
 "use server";
 
 import { prisma } from "@/lib/prismaClient";
-import { formSchema } from "@/app/post/create/page";
+import { formSchema } from "@/lib/validations/postSchema";
 import { z } from "zod";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
