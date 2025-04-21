@@ -1,21 +1,26 @@
 import PostList from "@/components/PostList";
 import SearchForm from "@/components/SearchForm";
 import { searchPosts } from "@/lib/posts";
+import { redirect } from "next/navigation";
+import Pagination from "@/components/Pagination";
 
 type SearchParams = {
   searchParams: {
     q?: string;
+    page?: string;
   };
 };
 
 export default async function SearchPage({ searchParams }: SearchParams) {
   const keyword = searchParams.q;
-  const posts = await searchPosts(keyword || "");
-  console.log("posts", posts);
 
-  if (!keyword) {
-    return <p className="text-center mt-10">キーワードを入力してください</p>;
-  }
+  // ページネーションのためのクエリパラメータを取得
+  const page = Number(searchParams.page) || 1;
+  const perPage = 10; // 1ページあたりの表示件数
+
+  const { posts, totalPages } = await searchPosts(keyword || "", page, perPage);
+
+  if (page > totalPages || !keyword) redirect("/");
 
   if (posts.length === 0) {
     return (
@@ -40,6 +45,7 @@ export default async function SearchPage({ searchParams }: SearchParams) {
         {posts.length} 件の記事が見つかりました
       </p>
       <PostList PostAllData={posts} />
+      <Pagination currentPage={page} totalPages={totalPages} />
     </div>
   );
 }

@@ -32,9 +32,13 @@ export async function fetchPostDetail(id: string) {
 }
 
 // 記事検索
-export async function searchPosts(keyword: string) {
+export async function searchPosts(
+  keyword: string,
+  page: number,
+  perPage: number
+) {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/posts/search?q=${keyword}`,
+    `${process.env.NEXT_PUBLIC_API_URL}/posts/search?q=${keyword}&page=${page}&pageSize=${perPage}`,
     {
       cache: "no-store",
     }
@@ -43,8 +47,7 @@ export async function searchPosts(keyword: string) {
     return []; // 失敗した場合は空の配列を返す
   }
 
-  const posts: Post[] = await res.json();
-  return posts;
+  return res.json();
 }
 
 // =======================================

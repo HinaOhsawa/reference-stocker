@@ -9,19 +9,40 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "No search keyword" }, { status: 400 });
   }
 
-  const posts = await prisma.post.findMany({
-    where: {
-      published: true,
-      OR: [
-        { title: { contains: keyword, mode: "insensitive" } },
-        { memo: { contains: keyword, mode: "insensitive" } },
-        {
-          tags: { some: { name: { contains: keyword, mode: "insensitive" } } },
-        },
-      ],
-    },
+  const page = Math.max(1, parseInt(searchParams.get("page") || "1"));
+  const pageSize = Math.max(1, parseInt(searchParams.get("pageSize") || "10"));
 
-    include: { tags: true, user: true },
+  const skip = (page - 1) * pageSize;
+
+  const whereCondition = {
+    published: true,
+    OR: [
+      { title: { contains: keyword, mode: "insensitive" as const } },
+      { memo: { contains: keyword, mode: "insensitive" as const } },
+      {
+        tags: {
+          some: { name: { contains: keyword, mode: "insensitive" as const } },
+        },
+      },
+    ],
+  };
+
+  const [posts, total] = await Promise.all([
+    prisma.post.findMany({
+      where: whereCondition,
+      include: { tags: true, user: true },
+      skip,
+      take: pageSize,
+      orderBy: { createdAt: "desc" },
+    }),
+    prisma.post.count({ where: whereCondition }),
+  ]);
+
+  return NextResponse.json({
+    posts,
+    total,
+    page,
+    pageSize,
+    totalPages: Math.ceil(total / pageSize),
   });
-  return NextResponse.json(posts);
 }
