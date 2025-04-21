@@ -35,7 +35,7 @@ export const formSchema = z.object({
 
 export default function AvatarForm({ userId }: { userId: string }) {
   const router = useRouter();
-  // const [avatar, setAvatar] = useState<string | null>(null);
+
   const [uploading, setUploading] = useState(false);
   const [preview, setPreview] = useState<string | undefined>(undefined);
 
@@ -45,8 +45,6 @@ export default function AvatarForm({ userId }: { userId: string }) {
       avatar: undefined,
     },
   });
-  // const [file, setFile] = useState<File | null>(null);
-  // const [message, setMessage] = useState("");
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -92,34 +90,19 @@ export default function AvatarForm({ userId }: { userId: string }) {
     router.push("/user-settings"); // 更新後にトップページへリダイレクト
   };
 
-  // const onSubmit = async () => {
-  //   setUploading(true);
-  //   try {
-  //     const avatarFile = form.getValues("avatar");
-  //     await uploadAvatar({ avatar: avatarFile }, userId);
-  //     setAvatar(preview);
-  //     alert("アバターが正常にアップロードされました");
-  //   } catch (err) {
-  //     console.error("アップロードエラー:", err);
-  //     alert("アップロード中にエラーが発生しました");
-  //   } finally {
-  //     setUploading(false);
-  //   }
-  // };
-
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         <div className="flex flex-col items-center space-y-4">
-          <Label htmlFor="avatar" className="text-lg font-medium">
-            プロフィール画像
+          <Label htmlFor="avatar" className="">
+            新しいプロフィール画像
           </Label>
 
           <div className="relative group">
-            <Avatar className="w-32 h-32 border-2 border-gray-200">
+            <Avatar className="w-16 h-16">
               <AvatarImage src={preview} alt="ユーザーアバター" />
               <AvatarFallback className="bg-gray-100 text-gray-400">
-                <User size={40} />
+                <User size={30} />
               </AvatarFallback>
             </Avatar>
 
@@ -128,7 +111,7 @@ export default function AvatarForm({ userId }: { userId: string }) {
                 type="button"
                 variant="destructive"
                 size="sm"
-                className="absolute -top-2 -right-2 rounded-full w-8 h-8 p-0"
+                className="absolute -top-2 -right-2 rounded-full w-6 h-6 p-0"
                 onClick={handleRemove}
               >
                 ×
@@ -171,13 +154,11 @@ export default function AvatarForm({ userId }: { userId: string }) {
           </p>
         </div>
 
-        <Button
-          type="submit"
-          className="w-full"
-          disabled={!preview || uploading}
-        >
-          {uploading ? "アップロード中..." : "アバターを保存"}
-        </Button>
+        <div className="mt-2 flex flex-wrap justify-end">
+          <Button type="submit" className="" disabled={!preview || uploading}>
+            {uploading ? "アップロード中..." : "更新"}
+          </Button>
+        </div>
       </form>
     </Form>
   );
