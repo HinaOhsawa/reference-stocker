@@ -13,6 +13,7 @@ const CreatePostPage = () => {
   const router = useRouter();
   const [tags, setTags] = useState<string[]>([]);
   const [isPublished, setIsPublished] = useState(false); // 公開状態の初期値
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const form = useForm({
     //zodResolver は Zod を React Hook Form で使うための関数
@@ -27,6 +28,9 @@ const CreatePostPage = () => {
   });
 
   async function onSubmit(value: z.infer<typeof formSchema>) {
+    if (isSubmitting) return; // 二重送信防止
+    setIsSubmitting(true);
+
     try {
       const { title, url, memo, published } = value;
 
@@ -37,6 +41,8 @@ const CreatePostPage = () => {
     } catch (error) {
       toast.error("投稿の作成に失敗しました。");
       console.error(error);
+    } finally {
+      setIsSubmitting(false);
     }
   }
 
@@ -50,6 +56,7 @@ const CreatePostPage = () => {
         setTags={setTags}
         isPublished={isPublished}
         setIsPublished={setIsPublished}
+        isSubmitting={isSubmitting}
       />
     </>
   );

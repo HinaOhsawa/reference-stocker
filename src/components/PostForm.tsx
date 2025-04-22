@@ -16,6 +16,7 @@ import { TagInput } from "@/components/TagInput";
 import { UseFormReturn } from "react-hook-form";
 import { z } from "zod";
 import { formSchema } from "@/lib/validations/postSchema";
+import { LoadingSpinner } from "./LoadingSpinner";
 
 type Props = {
   form: UseFormReturn<z.infer<typeof formSchema>>;
@@ -24,6 +25,7 @@ type Props = {
   setTags: React.Dispatch<React.SetStateAction<string[]>>;
   isPublished: boolean;
   setIsPublished: React.Dispatch<React.SetStateAction<boolean>>;
+  isSubmitting: boolean;
 };
 
 export default function PostForm({
@@ -33,6 +35,7 @@ export default function PostForm({
   setTags,
   isPublished,
   setIsPublished,
+  isSubmitting,
 }: Props) {
   return (
     <Form {...form}>
@@ -111,8 +114,8 @@ export default function PostForm({
             <FormItem className="mb-4">
               <FormLabel className="font-bold">公開</FormLabel>
               <FormControl>
-                <div className="flex items-center gap-2 justify-between">
-                  <p className="text-sm text-muted-foreground">
+                <div className="flex items-center gap-2 justify-between sm:justify-start">
+                  <p className="text-sm text-muted-foreground justify-between w-50">
                     {isPublished
                       ? "記事を公開します"
                       : "下書きとして保存します"}
@@ -131,8 +134,15 @@ export default function PostForm({
           )}
         />
         <div className="flex justify-center mt-6">
-          <Button className="font-bold" type="submit">
-            確定
+          <Button className="font-bold" type="submit" disabled={isSubmitting}>
+            {isSubmitting ? (
+              <span className="flex items-center gap-2">
+                <LoadingSpinner />
+                送信中...
+              </span>
+            ) : (
+              "確定"
+            )}
           </Button>
         </div>
       </form>

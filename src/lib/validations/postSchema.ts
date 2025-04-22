@@ -9,10 +9,10 @@ export const formSchema = z.object({
   url: z
     .string()
     .url({ message: "URLの形式が正しくありません。" })
-    .max(100, { message: "URLは100文字以内で入力してください。" }),
+    .max(200, { message: "URLは200文字以内で入力してください。" }),
   memo: z
     .string()
-    .max(200, { message: "本文は200文字以内で入力してください。" })
+    .max(300, { message: "本文は300文字以内で入力してください。" })
     .optional(),
   tags: z.array(z.string()).optional(),
   published: z.boolean(),

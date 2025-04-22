@@ -23,10 +23,15 @@ interface DataProps {
 const MyPostCard = ({ PostData }: DataProps) => {
   const { id, title, url, createdAt, tags, published } = PostData; // 分割代入
   return (
-    <Card>
+    <Card className="w-full overflow-hidden">
       <CardHeader>
         <CardTitle className="flex justify-between">
-          <Link href={`/post/${id}`} className="hover:opacity-70 transition">
+          <Link
+            href={`/post/${id}`}
+            className={
+              published ? "hover:opacity-70 transition" : "pointer-events-none"
+            }
+          >
             {title}
           </Link>
           <small className="font-normal">
