@@ -1,7 +1,7 @@
 // "use client";
 import UpdateUsernameForm from "@/components/UpdateUsernameForm";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
-import { fetchUser } from "@/lib/user";
+import { gethUser } from "@/lib/user";
 import { auth } from "@/lib/auth";
 import AvatarForm from "@/components/AvatarForm";
 import { Card } from "@/components/ui/card";
@@ -19,7 +19,7 @@ export default async function UserSettingsPage() {
   if (!userId) {
     return <p>ログインしてください</p>;
   }
-  const user = await fetchUser(userId);
+  const user = await gethUser(userId);
 
   if (!user || !userId) {
     return <p>ログインしてください</p>;
@@ -29,7 +29,7 @@ export default async function UserSettingsPage() {
       <h1 className="text-2xl font-bold mb-4">ユーザー設定</h1>
       <Card className="flex items-center gap-1">
         <Avatar className="w-16 h-16">
-          <AvatarImage src={user.image} alt="@username" />
+          <AvatarImage src={user?.image ?? undefined} alt="@username" />
         </Avatar>
         <p className="">{user.name}</p>
         <p className="text-gray-500">{user.email}</p>

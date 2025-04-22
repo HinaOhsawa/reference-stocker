@@ -11,15 +11,17 @@ import { auth } from "@/lib/auth";
 import SignIn from "./SignIn";
 import SignOut from "./SignOut";
 import Link from "next/link";
-import { fetchUser } from "@/lib/user";
-import { User } from "@/types/types";
+import { gethUser } from "@/lib/user";
 import { Settings, SquareUserRound, User as UserIcon } from "lucide-react";
 
 export default async function AuthButton() {
   const session = await auth();
   if (!session?.user) return <SignIn provider="" />;
 
-  const user: User = await fetchUser(session?.user?.id ?? "");
+  const user = await gethUser(session?.user?.id ?? "");
+  if (!user) {
+    return <SignIn provider="" />;
+  }
 
   return (
     <div className="flex gap-2 items-center">
@@ -37,6 +39,7 @@ export default async function AuthButton() {
             </Avatar>
           </Button>
         </DropdownMenuTrigger>
+
         <DropdownMenuContent className="w-56" align="end" forceMount>
           <DropdownMenuLabel className="font-normal">
             <div className="flex flex-col space-y-1">
@@ -46,7 +49,7 @@ export default async function AuthButton() {
               </p>
             </div>
           </DropdownMenuLabel>
-          <hr />
+          <hr className="mb-1" />
           <DropdownMenuItem>
             <Link
               className="w-full flex gap-2 justify-center p-2"

@@ -43,9 +43,10 @@ export default function UpdateUsernameForm({ userId }: { userId: string }) {
     startTransition(async () => {
       try {
         await UpdateUsername(userId, { name });
-        toast.success("ユーザー名が更新されました！");
         form.reset();
         router.push("/user-settings");
+        router.refresh();
+        toast.success("ユーザー名が更新されました！");
       } catch (err) {
         toast.error("ユーザー名の更新に失敗しました。");
         console.error(err);

@@ -7,13 +7,10 @@ import { auth } from "@/lib/auth";
 // =======================================
 
 // ユーザー情報を取得
-export async function fetchUser(userId: string) {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/user/?id=${userId}`,
-    {
-      cache: "no-store",
-    }
-  );
+export async function fetchUser() {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/user`, {
+    cache: "no-store",
+  });
   if (!res.ok) {
     throw new Error("Failed to fetch user");
   }
@@ -63,6 +60,17 @@ export const uploadAvatar = async (avatar: File, userId: string) => {
 // =======================================
 // Prisma直アクセスする関数
 // =======================================
+
+// ユーザー情報を取得
+export async function gethUser(userId: string) {
+  if (!userId) return null;
+
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+  });
+
+  return user;
+}
 
 // bookmark記事を取得
 export async function getMyBookmark(page = 1, pageSize = 10) {

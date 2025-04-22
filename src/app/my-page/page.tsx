@@ -1,7 +1,7 @@
 import MyPostCard from "@/components/MyPostCard";
 import { Card } from "@/components/ui/card";
 import { auth } from "@/lib/auth";
-import { getMyBookmark, getMyPosts, fetchUser } from "@/lib/user";
+import { getMyBookmark, getMyPosts, gethUser } from "@/lib/user";
 import Link from "next/link";
 import { ChevronRight, Pen, Settings } from "lucide-react";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
@@ -20,7 +20,8 @@ export default async function MyPage() {
 
   const userId = await session?.user?.id;
 
-  const user = await fetchUser(userId);
+  const user = await gethUser(userId);
+  // const user = await fetchUser(userId);
 
   if (!user || !userId) {
     return <p>ログインしてください</p>;
@@ -32,7 +33,7 @@ export default async function MyPage() {
       <h3 className="text-lg font-bold mt-6">ユーザー情報</h3>
       <Card className="mt-2 flex items-center gap-1">
         <Avatar className="w-16 h-16">
-          <AvatarImage src={user.image} alt="@username" />
+          <AvatarImage src={user?.image ?? undefined} alt="@username" />
         </Avatar>
         <p className="">{user.name}</p>
         <p className="text-gray-500">{user.email}</p>

@@ -85,8 +85,9 @@ export default function AvatarForm({ userId }: { userId: string }) {
       await uploadAvatar(value.avatar, userId);
 
       setPreview(undefined);
-      toast.success("プロフィール画像を更新しました！");
       router.push("/user-settings");
+      router.refresh();
+      toast.success("プロフィール画像を更新しました！");
     } catch (error) {
       console.error(error);
       toast.error(
