@@ -10,10 +10,11 @@ import {
 import Link from "next/link";
 import { Post } from "@/types/types";
 import dayjs from "dayjs";
-import { Button } from "./ui/button";
 import DeletePostButton from "./DeletePostButton";
 import LinkCard from "./LinkCard";
 import { SquarePen } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { buttonVariants } from "./ui/button";
 
 interface DataProps {
   PostData: Post;
@@ -50,10 +51,13 @@ const MyPostCard = ({ PostData }: DataProps) => {
       </CardContent>
 
       <CardFooter className="flex flex-wrap justify-end items-center gap-2 mb-2">
-        <Button>
+        <Link
+          href={`/post/edit/${id}`}
+          className={cn(buttonVariants({ variant: "default" }))}
+        >
           <SquarePen />
-          <Link href={`/post/edit/${id}`}>編集</Link>
-        </Button>
+          編集
+        </Link>
         <DeletePostButton postId={id} />
       </CardFooter>
     </Card>

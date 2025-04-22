@@ -25,7 +25,7 @@ export default function DeletePostButton({ postId }: { postId: string }) {
         onClick={() => setShowModal(true)}
         disabled={isPending}
         variant="secondary"
-        className=""
+        className="cursor-pointer"
       >
         <Trash2 />
         {isPending ? "削除中..." : "削除"}

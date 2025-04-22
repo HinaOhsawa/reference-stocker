@@ -3,8 +3,7 @@
 import { prisma } from "@/lib/prismaClient";
 import { formSchema } from "@/lib/validations/postSchema";
 import { z } from "zod";
-import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
+
 import { auth } from "@/lib/auth";
 
 export const createPost = async ({
@@ -43,7 +42,4 @@ export const createPost = async ({
       throw new Error("User not found in the database.");
     }
   }
-
-  revalidatePath("/"); // キャッシュを更新
-  redirect("/"); // リダイレクト
 };

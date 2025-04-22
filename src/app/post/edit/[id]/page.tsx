@@ -8,8 +8,11 @@ import { fetchPostDetail } from "@/lib/posts";
 import { updatePost } from "@/app/actions/updatePostAction";
 import PostForm from "@/components/PostForm";
 import { formSchema } from "@/lib/validations/postSchema";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 export default function EditPostPage({ params }: { params: { id: string } }) {
+  const router = useRouter();
   const { id } = params;
   const [tags, setTags] = useState<string[]>([]);
   const [isPublished, setIsPublished] = useState(false); // 公開状態の初期値
@@ -31,7 +34,9 @@ export default function EditPostPage({ params }: { params: { id: string } }) {
     const fetchPost = async () => {
       try {
         const post = await fetchPostDetail(id);
+
         if (!post) return <p>Post not found</p>;
+
         // フォームにデータをセット
         form.reset({
           title: post.title,
@@ -43,6 +48,7 @@ export default function EditPostPage({ params }: { params: { id: string } }) {
 
         //post.tags の各タグから name プロパティを取り出し、それを配列として setTags にセット
         setTags(post.tags?.map((tag) => tag.name) ?? []); // タグをセット
+        setIsPublished(post.published);
       } catch (error) {
         console.error(error);
       }
@@ -52,14 +58,22 @@ export default function EditPostPage({ params }: { params: { id: string } }) {
   }, [id, form]);
 
   async function onSubmit(value: z.infer<typeof formSchema>) {
-    const { title, url, memo, published } = value;
-    // サーバーアクションを使う
-    updatePost({ title, url, memo, tags, published }, id);
+    try {
+      const { title, url, memo, published } = value;
+
+      await updatePost({ title, url, memo, tags, published }, id);
+
+      toast.success("投稿が更新されました！");
+      router.push("/my-page/"); // リダイレクト
+    } catch (error) {
+      toast.error("投稿の更新に失敗しました。");
+      console.error(error);
+    }
   }
 
   return (
     <>
-      <h2 className="text-xl font-bold">新しい記事を作成</h2>
+      <h2 className="text-xl font-bold">記事を編集</h2>
       <PostForm
         form={form}
         onSubmit={onSubmit}

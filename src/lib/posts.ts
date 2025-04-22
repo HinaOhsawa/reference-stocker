@@ -22,7 +22,7 @@ export async function fetchPostsPaginated(page: number, perPage: number) {
   return res.json();
 }
 
-// Idを使ってpostの詳細を取得
+// 編集画面用の自分の記事詳細を取得（published: true なし）
 export async function fetchPostDetail(id: string) {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/posts/${id}`, {
     cache: "no-store",
@@ -58,6 +58,7 @@ export async function searchPosts(
 export async function getRelatedPosts(postId: string, tagIds: string[]) {
   const relatedPosts = await prisma.post.findMany({
     where: {
+      published: true,
       tags: {
         some: {
           id: { in: tagIds },
@@ -83,7 +84,7 @@ export async function getRelatedPosts(postId: string, tagIds: string[]) {
 // 記事詳細と関連する記事を取得
 export async function getPostWithRelated(postId: string) {
   const post = await prisma.post.findUnique({
-    where: { id: postId },
+    where: { id: postId, published: true },
     include: { tags: true, user: true },
   });
 
