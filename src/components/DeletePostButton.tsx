@@ -5,6 +5,8 @@ import { deletePost } from "@/app/actions/deletePostAction";
 // import { useRouter } from "next/navigation";
 import { Button } from "./ui/button";
 import { Trash2 } from "lucide-react";
+import { LoadingSpinner } from "./LoadingSpinner";
+import { toast } from "sonner";
 
 export default function DeletePostButton({ postId }: { postId: string }) {
   // const router = useRouter();
@@ -12,11 +14,17 @@ export default function DeletePostButton({ postId }: { postId: string }) {
   const [showModal, setShowModal] = useState(false);
 
   const handleDelete = () => {
-    startTransition(async () => {
-      setShowModal(false);
-      await deletePost(postId);
-      // router.push("/"); // 削除後にトップページへリダイレクト
-    });
+    try {
+      startTransition(async () => {
+        setShowModal(false);
+        await deletePost(postId);
+        toast.success("投稿を削除しました！");
+      });
+    } catch (error) {
+      toast.error(
+        error instanceof Error ? error.message : "投稿の削除に失敗しました。"
+      );
+    }
   };
 
   return (
@@ -49,7 +57,14 @@ export default function DeletePostButton({ postId }: { postId: string }) {
                 disabled={isPending}
                 className="cursor-pointer"
               >
-                {isPending ? "削除中..." : "削除"}
+                {isPending ? (
+                  <>
+                    <LoadingSpinner />
+                    削除中...
+                  </>
+                ) : (
+                  "削除"
+                )}
               </Button>
             </div>
           </div>
