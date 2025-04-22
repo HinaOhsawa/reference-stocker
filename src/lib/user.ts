@@ -41,6 +41,25 @@ export async function fetchMyBookmark() {
   return posts;
 }
 
+// プロフィール画像の更新
+export const uploadAvatar = async (avatar: File, userId: string) => {
+  const formData = new FormData();
+  formData.append("avatar", avatar);
+  formData.append("userId", userId);
+
+  const res = await fetch("/api/upload-avatar", {
+    method: "POST",
+    body: formData,
+  });
+
+  if (!res.ok) {
+    const result = await res.json();
+    throw new Error(result.error || "アップロードに失敗しました。");
+  }
+
+  return await res.json(); // 必要であれば返り値として使えるように
+};
+
 // =======================================
 // Prisma直アクセスする関数
 // =======================================

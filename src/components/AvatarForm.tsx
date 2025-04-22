@@ -18,15 +18,21 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { LoadingSpinner } from "./LoadingSpinner";
+import { toast } from "sonner";
+import { uploadAvatar } from "@/lib/user";
+import { useRef } from "react";
 
 export const formSchema = z.object({
   avatar: z
     .instanceof(File)
-    .refine((file) => file.size <= 2 * 1024 * 1024, {
+    .optional()
+    .refine((file) => !file || file.size <= 2 * 1024 * 1024, {
       message: "画像サイズは2MB以下にしてください。",
     })
     .refine(
-      (file) => ["image/jpeg", "image/png", "image/webp"].includes(file.type),
+      (file) =>
+        !file || ["image/jpeg", "image/png", "image/webp"].includes(file.type),
       {
         message: "対応形式は JPEG, PNG, WEBP のみです。",
       }
@@ -38,6 +44,8 @@ export default function AvatarForm({ userId }: { userId: string }) {
 
   const [uploading, setUploading] = useState(false);
   const [preview, setPreview] = useState<string | undefined>(undefined);
+  // input を参照する ref を作成
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -51,7 +59,7 @@ export default function AvatarForm({ userId }: { userId: string }) {
     if (!file) return;
     console.log("Selected file:", file);
     form.setValue("avatar", file);
-    // Create a preview
+    // ファイルをプレビュー
     const reader = new FileReader();
     reader.onloadend = () => {
       setPreview(reader.result as string);
@@ -61,33 +69,32 @@ export default function AvatarForm({ userId }: { userId: string }) {
 
   const handleRemove = () => {
     setPreview(undefined);
+    form.setValue("avatar", undefined); // フォームの値もクリア
+    if (inputRef.current) {
+      inputRef.current.value = ""; // 再選択が有効になる
+    }
   };
 
   const onSubmit = async (value: z.infer<typeof formSchema>) => {
     setUploading(true);
     if (!value.avatar) return;
 
-    const formData = new FormData();
-    formData.append("avatar", value.avatar);
-    formData.append("userId", userId); // propsなどから渡されたID
+    try {
+      setUploading(true);
+      //画像更新処理
+      await uploadAvatar(value.avatar, userId);
 
-    const res = await fetch("/api/upload-avatar", {
-      method: "POST",
-      body: formData,
-    });
-    const result = await res.json();
-
-    if (!res.ok) {
-      setUploading(false);
-      alert(`アップロードに失敗しました: ${result.error}`);
-      return;
+      setPreview(undefined);
+      toast.success("プロフィール画像を更新しました！");
+      router.push("/user-settings");
+    } catch (error) {
+      console.error(error);
+      toast.error(
+        error instanceof Error ? error.message : "アップロードに失敗しました。"
+      );
+    } finally {
+      setUploading(false); //アップロード中状態をリセット
     }
-
-    setPreview(undefined);
-    setUploading(false);
-    // アップロード成功のトーストを実装
-
-    router.push("/user-settings"); // 更新後にトップページへリダイレクト
   };
 
   return (
@@ -142,6 +149,7 @@ export default function AvatarForm({ userId }: { userId: string }) {
                       className="hidden"
                       onChange={handleFileChange}
                       disabled={uploading}
+                      ref={inputRef}
                     />
                   </FormControl>
                   <FormMessage />
@@ -156,7 +164,14 @@ export default function AvatarForm({ userId }: { userId: string }) {
 
         <div className="mt-2 flex flex-wrap justify-end">
           <Button type="submit" className="" disabled={!preview || uploading}>
-            {uploading ? "アップロード中..." : "更新"}
+            {uploading ? (
+              <>
+                <LoadingSpinner />
+                アップロード中...
+              </>
+            ) : (
+              "更新"
+            )}
           </Button>
         </div>
       </form>
