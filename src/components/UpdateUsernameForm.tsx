@@ -16,6 +16,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { toast } from "sonner";
+import { LoadingSpinner } from "./LoadingSpinner";
 
 // バリデーション Zod のスキーマ定義
 export const formSchema = z.object({
@@ -41,11 +43,14 @@ export default function UpdateUsernameForm({ userId }: { userId: string }) {
     startTransition(async () => {
       try {
         await UpdateUsername(userId, { name });
+        toast.success("ユーザー名が更新されました！");
+        form.reset();
+        router.push("/user-settings");
       } catch (err) {
+        toast.error("ユーザー名の更新に失敗しました。");
         console.error(err);
       }
     });
-    router.push("/user-settings"); // 更新後にトップページへリダイレクト
   }
 
   return (
@@ -66,8 +71,15 @@ export default function UpdateUsernameForm({ userId }: { userId: string }) {
             )}
           />
           <div className="mt-2 flex flex-wrap justify-end">
-            <Button className="mt-2" type="submit">
-              {isPending ? "処理中..." : "更新"}
+            <Button className="mt-2" type="submit" disabled={isPending}>
+              {isPending ? (
+                <>
+                  <LoadingSpinner />
+                  処理中...
+                </>
+              ) : (
+                "更新"
+              )}
             </Button>
           </div>
         </form>
