@@ -23,7 +23,12 @@ export default function LinkCard({ url }: { url: string }) {
   if (!data) return null;
 
   return (
-    <a href={data.url} target="_blank" rel="noopener noreferrer">
+    <a
+      href={data.url}
+      target="_blank"
+      rel="noopener noreferrer"
+      onClick={(e) => e.stopPropagation()} // 親要素へのイベント伝播を防げる
+    >
       <Card className="flex flex-col p-0 sm:flex-row overflow-hidden hover:shadow-md transition-shadow">
         {data.image ? (
           <div className=" w-full sm:w-1/3 h-48 sm:h-auto ">

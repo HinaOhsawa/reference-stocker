@@ -45,7 +45,10 @@ const PostCard = ({ PostData }: DataProps) => {
   };
 
   return (
-    <Card onClick={handleClick} className="cursor-pointer hover:bg-gray-50">
+    <Card
+      onClick={handleClick}
+      className="w-full overflow-hidden cursor-pointer hover:bg-gray-50"
+    >
       <CardHeader>
         <Link href={`/post/${id}`} className="hover:opacity-70 transition">
           <CardTitle>{title}</CardTitle>
@@ -55,7 +58,7 @@ const PostCard = ({ PostData }: DataProps) => {
         <CardDescription>
           <div className="flex items-center gap-4">
             <Avatar className="w-8 h-8">
-              <AvatarImage src={user.image ?? undefined} alt="@username" />
+              <AvatarImage src={user?.image ?? undefined} alt="@username" />
               <AvatarFallback className="bg-gray-100 text-gray-400">
                 <User size={40} />
               </AvatarFallback>

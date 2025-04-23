@@ -63,7 +63,7 @@ export default async function PostDetail({
         <CardContent className="px-0 space-y-4">
           <div className="space-y-4">
             <LinkCard url={url} />
-            <h3 className="font-semibold mb-2">Memo</h3>
+            <h3 className="font-semibold mt-6 mb-2">Memo</h3>
             <p className="text-sm text-muted-foreground line-clamp-3">{memo}</p>
           </div>
           <div className="flex justify-end items-center gap-2">
