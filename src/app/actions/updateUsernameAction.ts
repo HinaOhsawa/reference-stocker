@@ -10,13 +10,13 @@ export async function UpdateUsername(
 ) {
   try {
     await prisma.user.update({
-      where: { id: id },
-      data: { name: name },
+      where: { id },
+      data: { name },
     });
 
     return { success: true };
   } catch (err) {
     console.error(err);
-    return { error: "更新に失敗しました" };
+    return { error: "ユーザー名の更新に失敗しました" };
   }
 }

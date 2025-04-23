@@ -10,33 +10,26 @@ export const updatePost = async (
   id: string
 ) => {
   const session = await auth();
+  const userId = session?.user?.id;
+  if (!userId) throw new Error("Unauthorized");
 
-  if (session?.user?.email !== null && session?.user !== undefined) {
-    const dbUser = await prisma.user.findUnique({
-      where: { email: session.user.email },
-    });
-
-    if (dbUser) {
-      await prisma.post.update({
-        where: { id },
-        data: {
-          url,
-          title,
-          memo,
-          published,
-          tags: {
-            connectOrCreate: (tags ?? []).map((tag) => ({
-              where: { name: tag },
-              create: { name: tag },
-            })),
-          },
-          user: {
-            connect: { id: dbUser.id }, // 既存のユーザーを関連付ける
-          },
-        },
-      });
-    } else {
-      throw new Error("User not found in the database.");
-    }
-  }
+  await prisma.post.update({
+    where: { id },
+    data: {
+      title,
+      url,
+      memo,
+      published,
+      tags: {
+        connectOrCreate: (tags ?? []).map((tag) => ({
+          where: { name: tag },
+          create: { name: tag },
+        })),
+      },
+      user: {
+        connect: { id: userId },
+      },
+    },
+  });
+  return { success: true };
 };
