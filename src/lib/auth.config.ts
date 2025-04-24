@@ -20,6 +20,9 @@ export const authConfig = {
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     }),
   ],
+  pages: {
+    signIn: "/login", // 👈 カスタムログインページのパス
+  },
   // 認証のカスタマイズ処理（ページ制限 & JWT のカスタマイズ）
   callbacks: {
     // authorized({ request, auth }) {
