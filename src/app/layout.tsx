@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "@/components/Header";
 import { Toaster } from "sonner";
 import { SessionProvider } from "next-auth/react";
+import Footer from "@/components/Footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,9 +33,12 @@ export default function RootLayout({
       >
         <SessionProvider>
           <Header />
-          <main className="mx-auto max-w-5xl p-4 sm:px-6">{children}</main>
+          <main className="mx-auto max-w-5xl py-8 px-4 sm:px-6">
+            {children}
+          </main>
           <Toaster richColors closeButton position="top-center" />
         </SessionProvider>
+        <Footer />
       </body>
     </html>
   );
