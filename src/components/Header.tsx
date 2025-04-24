@@ -1,8 +1,11 @@
 import Link from "next/link";
 import AuthButton from "./AuthButton";
-import Nav from "./Nav";
+import AuthNav from "./AuthNav";
+import { auth } from "@/lib/auth";
 
-export default function Header() {
+export default async function Header() {
+  const session = await auth();
+
   return (
     <header className="sticky flex justify-center border-b">
       <div className="flex items-center justify-between gap-2 w-full h-16 max-w-5xl px-4 mx-auto sm:px-6">
@@ -13,7 +16,7 @@ export default function Header() {
         >
           <h1 className="font-bold text- sm:text-xl">Reference Stocker</h1>
         </Link>
-        <Nav />
+        {session?.user && <AuthNav />}
         <AuthButton />
       </div>
     </header>

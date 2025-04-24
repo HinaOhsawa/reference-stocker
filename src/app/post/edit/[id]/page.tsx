@@ -10,8 +10,11 @@ import PostForm from "@/components/PostForm";
 import { formSchema } from "@/lib/validations/postSchema";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { useAuthRedirect } from "@/hooks/useAuthRedirect";
+import { LoadingSpinner } from "@/components/LoadingSpinner";
 
 export default function EditPostPage({ params }: { params: { id: string } }) {
+  const { status } = useAuthRedirect(); // ログインしていない場合はリダイレクト
   const router = useRouter();
   const { id } = params;
   const [tags, setTags] = useState<string[]>([]);
@@ -75,6 +78,15 @@ export default function EditPostPage({ params }: { params: { id: string } }) {
     } finally {
       setIsSubmitting(false);
     }
+  }
+
+  if (status === "loading") {
+    return (
+      <>
+        <LoadingSpinner />
+        <p>読み込み中...</p>
+      </>
+    );
   }
 
   return (

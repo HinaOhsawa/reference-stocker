@@ -1,5 +1,6 @@
 import Pagination from "@/components/Pagination";
 import PostList from "@/components/PostList";
+import { redirectIfUnauth } from "@/lib/redirectIfUnauth";
 import { getMyBookmark } from "@/lib/user";
 
 export default async function Bookmark({
@@ -7,6 +8,8 @@ export default async function Bookmark({
 }: {
   searchParams: { page?: string };
 }) {
+  await redirectIfUnauth(); // ログインしていない場合はリダイレクト
+
   // ページネーションのためのクエリパラメータを取得
   const page = Number(searchParams.page) || 1;
   const perPage = 10; // 1ページあたりの表示件数

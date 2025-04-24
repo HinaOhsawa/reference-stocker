@@ -8,8 +8,12 @@ import { formSchema } from "@/lib/validations/postSchema";
 import PostForm from "@/components/PostForm";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner"; // または react-hot-toast を使ってもOK
+import { useAuthRedirect } from "@/hooks/useAuthRedirect";
+import { LoadingSpinner } from "@/components/LoadingSpinner";
 
 const CreatePostPage = () => {
+  const { status } = useAuthRedirect(); // ログインしていない場合はリダイレクト
+
   const router = useRouter();
   const [tags, setTags] = useState<string[]>([]);
   const [isPublished, setIsPublished] = useState(false); // 公開状態の初期値
@@ -44,6 +48,15 @@ const CreatePostPage = () => {
     } finally {
       setIsSubmitting(false);
     }
+  }
+
+  if (status === "loading") {
+    return (
+      <>
+        <LoadingSpinner />
+        <p>読み込み中...</p>
+      </>
+    );
   }
 
   return (

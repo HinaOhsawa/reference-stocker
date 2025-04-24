@@ -1,8 +1,6 @@
-// "use client";
 import UpdateUsernameForm from "@/components/UpdateUsernameForm";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { gethUser } from "@/lib/user";
-import { auth } from "@/lib/auth";
 import AvatarForm from "@/components/AvatarForm";
 import { Card } from "@/components/ui/card";
 import {
@@ -11,15 +9,13 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { redirectIfUnauth } from "@/lib/redirectIfUnauth";
 
 export default async function UserSettingsPage() {
-  const session = await auth();
-  const userId = await session?.user?.id;
+  const session = await redirectIfUnauth(); // ログインしていない場合はリダイレクト
+  const userId = session?.user?.id;
 
-  if (!userId) {
-    return <p>ログインしてください</p>;
-  }
-  const user = await gethUser(userId);
+  const user = await gethUser(userId ?? "");
 
   if (!user || !userId) {
     return <p>ログインしてください</p>;

@@ -1,12 +1,15 @@
 import MyPostCard from "@/components/MyPostCard";
 import { getMyPosts } from "@/lib/user";
 import Pagination from "@/components/Pagination";
+import { redirectIfUnauth } from "@/lib/redirectIfUnauth";
 
 export default async function MyPosts({
   searchParams,
 }: {
   searchParams: { page?: string };
 }) {
+  await redirectIfUnauth();
+
   // ページネーションのためのクエリパラメータを取得
   const page = Number(searchParams.page) || 1;
   const perPage = 10; // 1ページあたりの表示件数

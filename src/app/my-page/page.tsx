@@ -1,6 +1,5 @@
 import MyPostCard from "@/components/MyPostCard";
 import { Card } from "@/components/ui/card";
-import { auth } from "@/lib/auth";
 import { getMyBookmark, getMyPosts, gethUser } from "@/lib/user";
 import Link from "next/link";
 import { ChevronRight, Pen, Settings } from "lucide-react";
@@ -9,22 +8,19 @@ import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { BookmarkCheck, FileText } from "lucide-react";
 import PostCard from "@/components/PostCard";
+import { redirectIfUnauth } from "@/lib/redirectIfUnauth";
 
 export default async function MyPage() {
-  const session = await auth();
-  if (!session || !session.user?.id) {
-    throw new Error("Unauthorized");
-  }
+  const session = await redirectIfUnauth(); // ログインしていない場合はリダイレクト
+  const userId = session?.user?.id;
+
   const { myPosts } = await getMyPosts();
   const { bookmarkPosts } = await getMyBookmark();
 
-  const userId = await session?.user?.id;
-
-  const user = await gethUser(userId);
-  // const user = await fetchUser(userId);
+  const user = await gethUser(userId ?? "");
 
   if (!user || !userId) {
-    return <p>ログインしてください</p>;
+    return <p>ログインしてください。</p>;
   }
 
   return (
