@@ -3,7 +3,7 @@ import { Pen, SquareUserRound } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 
-export default function Nav() {
+export default function AuthNav() {
   return (
     <nav className="flex gap-2 md:gap-4">
       <Link
