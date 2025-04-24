@@ -16,11 +16,11 @@ import { Settings, SquareUserRound, User as UserIcon } from "lucide-react";
 
 export default async function AuthButton() {
   const session = await auth();
-  if (!session?.user) return <SignIn provider="" />;
+  if (!session?.user) return <SignIn provider="google" />;
 
   const user = await gethUser(session?.user?.id ?? "");
   if (!user) {
-    return <SignIn provider="" />;
+    return <SignIn provider="google" />;
   }
 
   return (

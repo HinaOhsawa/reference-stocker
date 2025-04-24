@@ -1,26 +1,18 @@
-import React from "react";
-import { Button } from "./ui/button";
-import { signOut } from "@/lib/auth";
+"use client";
 import { LogOut } from "lucide-react";
+import { signOut } from "next-auth/react";
+import { Button } from "./ui/button";
+import { toast } from "sonner";
 
-export default function SignOut({
-  ...props
-}: { provider?: string } & React.ComponentPropsWithRef<typeof Button>) {
+export default function SignOut() {
+  const handleSignOut = async () => {
+    toast.success("ログアウトしました。");
+    await signOut({ callbackUrl: "/" }); // ログアウト後にトップへリダイレクト
+  };
   return (
-    <form
-      className="w-full"
-      action={async () => {
-        "use server";
-        // デフォルトでは、サインアウト後に現在のページにリダイレクトされる
-        // callbackUrl を設定することも可能
-        // await signOut({ callbackUrl: "/" });
-        await signOut({ redirectTo: "/" });
-      }}
-    >
-      <Button variant="ghost" className="w-full p-0" {...props}>
-        <LogOut />
-        ログアウト
-      </Button>
-    </form>
+    <Button onClick={handleSignOut} variant="ghost" className="w-full p-0">
+      <LogOut />
+      ログアウト
+    </Button>
   );
 }
