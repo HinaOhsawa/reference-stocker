@@ -1,0 +1,88 @@
+{
+  "users": [
+    {
+      "name": "犬山",
+      "email": "inu@example.com",
+      "image": "/images/inu.png",
+      "posts": [
+        {
+          "title": "新しいNext.jsプロジェクトを設定する方法",
+          "url": "https://nextjs.org/docs/app/getting-started/installation",
+          "memo": "新しいNext.jsプロジェクトを設定する方法です。’npx create-next-app@latest’",
+          "tags": ["Next.js", "フロントエンド"]
+        },
+        {
+          "title": "shadcn/uiのCardコンポーネントの使い方",
+          "url": "https://ui.shadcn.com/docs/components/card",
+          "memo": "「npx shadcn@latest add card」で追加できます。",
+          "tags": ["Next.js", "フロントエンド"]
+        }
+      ]
+    },
+    {
+      "name": "ネコしん",
+      "email": "neko@example.com",
+      "image": "/images/neko.png",
+      "posts": [
+        {
+          "title": "Blenderの基本操作",
+          "url": "https://nextjs.org/docs/app/getting-started/installation",
+          "memo": "Blenderの基本操作,視点の操作、オブジェクトの追加・削除、ファイル保存のやり方",
+          "tags": ["Blender", "3D"]
+        }
+      ]
+    },
+    {
+      "name": "パオくん",
+      "email": "pao@example.com",
+      "image": "/images/zou.png",
+      "posts": [
+        {
+          "title": "Gitコマンド一覧",
+          "url": "https://qiita.com/fukumone/items/73e1a9a62c5e4454263b",
+          "memo": "Gitコマンド一覧",
+          "tags": ["Git", "Gitコマンド"]
+        }
+      ]
+    },
+    {
+      "name": "ペンすけ",
+      "email": "pengin@example.com",
+      "image": "/images/pengin.png",
+      "posts": [
+        {
+          "title": "Next jsで学ぶReact講座 #1",
+          "url": "https://www.youtube.com/watch?v=15WLMqnkPsE&list=PLwM1-TnN_NN6fUhOoZyU4iZiwhLyISopO",
+          "memo": "Reactはv17.0.1、Next.jsはv10.0.8を使用",
+          "tags": ["React", "入門", "フロントエンド"]
+        }
+      ]
+    },
+    {
+      "name": "豚平",
+      "email": "buta@example.com",
+      "image": "/images/buta.png",
+      "posts": [
+        {
+          "title": "tailwindcssのgrid-columnの使い方",
+          "url": "https://tailwindcss.com/docs/grid-column",
+          "memo": "Reactはv17.0.1、Next.jsはv10.0.8を使用",
+          "tags": ["tailwindcss", "grid", "css"]
+        }
+      ]
+    },
+    {
+      "name": "Rパカ",
+      "email": "arupaka@example.com",
+      "image": "/images/arupaka.png",
+      "posts": [
+        {
+          "title": "TypeScript入門",
+          "url": "https://www.youtube.com/watch?v=kd8VH10jXwc&list=PLX8Rsrpnn3IW0REXnTWQp79mxCvHkIrad",
+          "memo": "日本一わかりやすいTypeScript入門です。",
+          "tags": ["フロントエンド", "TypeScript", "入門"]
+        }
+      ]
+    }
+  ]
+}

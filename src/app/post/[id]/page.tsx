@@ -34,7 +34,7 @@ export default async function PostDetail({
   const { title, url, createdAt, updatedAt, user, memo, tags } = post;
 
   return (
-    <div className="max-w-4xl mx-auto px-4">
+    <div className="max-w-4xl mx-auto">
       <Card className="p-6 rounded-2xl shadow-md border bg-white">
         <CardHeader className="px-0 space-y-4">
           <div className="flex items-center gap-4">
