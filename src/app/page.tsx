@@ -3,6 +3,7 @@ import SearchForm from "@/components/SearchForm";
 import Pagination from "@/components/Pagination";
 import { fetchPostsPaginated } from "@/lib/posts";
 import { redirect } from "next/navigation";
+import About from "@/components/About";
 
 export default async function Home({
   searchParams,
@@ -19,6 +20,7 @@ export default async function Home({
   return (
     <>
       <SearchForm />
+      <About />
       <PostList PostAllData={posts} />
       <Pagination currentPage={page} totalPages={totalPages} />
     </>

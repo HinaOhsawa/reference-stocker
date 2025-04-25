@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 import { Toaster } from "sonner";
 import { SessionProvider } from "next-auth/react";
 import Footer from "@/components/Footer";
+import ScrollToTopButton from "@/components/ScrollToTopButton";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -18,7 +19,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Reference Stocker",
-  description: "Reference Stocker",
+  description: "学習に使った参考記事や動画のリンクを保存・共有するためのサイト",
 };
 
 export default function RootLayout({
@@ -33,12 +34,14 @@ export default function RootLayout({
       >
         <SessionProvider>
           <Header />
+
           <main className="mx-auto max-w-5xl py-8 px-4 sm:px-6">
             {children}
           </main>
           <Toaster richColors closeButton position="top-center" />
         </SessionProvider>
         <Footer />
+        <ScrollToTopButton />
       </body>
     </html>
   );

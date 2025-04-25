@@ -8,7 +8,7 @@ export default async function Footer() {
         <div className="space-y-4">
           <h3 className="text-xl font-bold">Reference Stocker</h3>
           <p className="text-sm text-muted-foreground">
-            高品質な製品とサービスを提供する会社です。お客様のニーズに合わせたソリューションを提供します。
+            学習に使った参考記事や動画のリンクを保存・共有するためのサイト
           </p>
         </div>
 
