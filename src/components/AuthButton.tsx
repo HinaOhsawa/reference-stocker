@@ -34,7 +34,7 @@ export default async function AuthButton() {
                 <AvatarImage src={user.image} alt={user.name ?? ""} />
               )}
               <AvatarFallback className="bg-gray-100 text-gray-400">
-                <UserIcon size={30} />
+                <UserIcon size={20} />
               </AvatarFallback>
             </Avatar>
           </Button>

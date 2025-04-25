@@ -63,7 +63,7 @@ const PostCard = ({ PostData }: DataProps) => {
             <Avatar className="w-8 h-8">
               <AvatarImage src={user?.image ?? undefined} alt="@username" />
               <AvatarFallback className="bg-gray-100 text-gray-400">
-                <User size={40} />
+                <User size={20} />
               </AvatarFallback>
             </Avatar>
             <p>{user.name}</p>

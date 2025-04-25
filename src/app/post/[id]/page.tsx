@@ -38,10 +38,10 @@ export default async function PostDetail({
       <Card className="p-6 rounded-2xl shadow-md border bg-white">
         <CardHeader className="px-0 space-y-4">
           <div className="flex items-center gap-4">
-            <Avatar className="w-12 h-12">
+            <Avatar className="w-10 h-10">
               <AvatarImage src={user.image ?? undefined} alt="@username" />
               <AvatarFallback className="bg-gray-100 text-gray-400">
-                <User size={40} />
+                <User size={30} />
               </AvatarFallback>
             </Avatar>
             <div>

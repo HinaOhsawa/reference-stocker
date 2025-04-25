@@ -2,13 +2,14 @@ import MyPostCard from "@/components/MyPostCard";
 import { Card } from "@/components/ui/card";
 import { getMyBookmark, getMyPosts, gethUser } from "@/lib/user";
 import Link from "next/link";
-import { ChevronRight, Pen, Settings } from "lucide-react";
+import { ChevronRight, Pen, Settings, User } from "lucide-react";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { BookmarkCheck, FileText } from "lucide-react";
 import PostCard from "@/components/PostCard";
 import { redirectIfUnauth } from "@/lib/redirectIfUnauth";
+import { AvatarFallback } from "@radix-ui/react-avatar";
 
 export default async function MyPage() {
   const session = await redirectIfUnauth(); // ログインしていない場合はリダイレクト
@@ -30,6 +31,9 @@ export default async function MyPage() {
       <Card className="mt-2 flex items-center gap-1">
         <Avatar className="w-16 h-16">
           <AvatarImage src={user?.image ?? undefined} alt="@username" />
+          <AvatarFallback className="w-full bg-gray-100 text-gray-400 flex items-center justify-center">
+            <User size={30} />
+          </AvatarFallback>
         </Avatar>
         <p className="">{user.name}</p>
         <p className="text-gray-500">{user.email}</p>

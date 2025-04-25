@@ -10,6 +10,8 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { redirectIfUnauth } from "@/lib/redirectIfUnauth";
+import { AvatarFallback } from "@radix-ui/react-avatar";
+import { User } from "lucide-react";
 
 export default async function UserSettingsPage() {
   const session = await redirectIfUnauth(); // ログインしていない場合はリダイレクト
@@ -26,7 +28,11 @@ export default async function UserSettingsPage() {
       <Card className="flex items-center gap-1">
         <Avatar className="w-16 h-16">
           <AvatarImage src={user?.image ?? undefined} alt="@username" />
+          <AvatarFallback className="w-full bg-gray-100 text-gray-400 flex items-center justify-center">
+            <User size={30} />
+          </AvatarFallback>
         </Avatar>
+
         <p className="">{user.name}</p>
         <p className="text-gray-500">{user.email}</p>
       </Card>
