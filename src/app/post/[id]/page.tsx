@@ -31,7 +31,7 @@ export default async function PostDetail({
   if (!result) return <p>Post not found</p>;
   const post: Post = result?.post;
 
-  const { title, url, createdAt, user, memo, tags } = post;
+  const { title, url, createdAt, updatedAt, user, memo, tags } = post;
 
   return (
     <div className="max-w-4xl mx-auto px-4">
@@ -56,8 +56,9 @@ export default async function PostDetail({
               </span>
             ))}
           </div>
-          <div className="text-sm text-muted-foreground mb-2">
-            投稿日 {dayjs(createdAt).format("YYYY/MM/DD HH:mm")}
+          <div className="flex gap-4 flex-wrap text-sm text-muted-foreground mb-2">
+            <p>投稿日 {dayjs(createdAt).format("YYYY/MM/DD HH:mm")}</p>
+            <p>更新日 {dayjs(updatedAt).format("YYYY/MM/DD HH:mm")}</p>
           </div>
         </CardHeader>
         <CardContent className="px-0 space-y-4">

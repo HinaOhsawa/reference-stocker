@@ -23,7 +23,7 @@ interface DataProps {
 }
 
 const PostCard = ({ PostData }: DataProps) => {
-  const { id, title, url, createdAt, user, tags } = PostData; // 分割代入
+  const { id, title, url, createdAt, updatedAt, user, tags } = PostData; // 分割代入
 
   const router = useRouter();
 
@@ -53,7 +53,10 @@ const PostCard = ({ PostData }: DataProps) => {
         <Link href={`/post/${id}`} className="hover:opacity-70 transition">
           <CardTitle>{title}</CardTitle>
         </Link>
-        <small>{dayjs(createdAt).format("YYYY/MM/DD HH:mm")}</small>
+        <div className="flex gap-4 flex-wrap  text-muted-foreground my-2">
+          <small>投稿日 {dayjs(createdAt).format("YYYY/MM/DD HH:mm")}</small>
+          <small>更新日 {dayjs(updatedAt).format("YYYY/MM/DD HH:mm")}</small>
+        </div>
 
         <CardDescription>
           <div className="flex items-center gap-4">

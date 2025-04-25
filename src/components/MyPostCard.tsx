@@ -21,7 +21,7 @@ interface DataProps {
 }
 
 const MyPostCard = ({ PostData }: DataProps) => {
-  const { id, title, url, createdAt, tags, published } = PostData; // 分割代入
+  const { id, title, url, createdAt, updatedAt, tags, published } = PostData; // 分割代入
   return (
     <Card className="w-full overflow-hidden">
       <CardHeader>
@@ -42,7 +42,10 @@ const MyPostCard = ({ PostData }: DataProps) => {
             )}
           </small>
         </CardTitle>
-        <small>{dayjs(createdAt).format("YYYY/MM/DD HH:mm")}</small>
+        <div className="flex gap-4 flex-wrap  text-muted-foreground my-2">
+          <small>投稿日 {dayjs(createdAt).format("YYYY/MM/DD HH:mm")}</small>
+          <small>更新日 {dayjs(updatedAt).format("YYYY/MM/DD HH:mm")}</small>
+        </div>
       </CardHeader>
       <CardContent>
         <LinkCard url={url} />
