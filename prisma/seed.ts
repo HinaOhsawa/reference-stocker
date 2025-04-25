@@ -27,17 +27,21 @@ async function main() {
     // ユーザーごとの投稿処理
     for (const postData of userData.posts) {
       // 投稿を作成
-      const post = await prisma.post.create({
+      await prisma.post.create({
         data: {
           title: postData.title,
           url: postData.url,
           memo: postData.memo,
           userId: user.id,
           tags: {
-            connectOrCreate: postData.tags.map((tag) => ({
-              where: { name: tag },
-              create: { name: tag },
-            })),
+            connectOrCreate: postData.tags.map(
+              (
+                tag: string
+              ): { where: { name: string }; create: { name: string } } => ({
+                where: { name: tag },
+                create: { name: tag },
+              })
+            ),
           },
         },
       });
