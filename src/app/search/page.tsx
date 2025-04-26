@@ -4,17 +4,17 @@ import { searchPosts } from "@/lib/posts";
 import Pagination from "@/components/Pagination";
 
 type SearchParams = {
-  searchParams: {
+  searchParams: Promise<{
     q?: string;
     page?: string;
-  };
+  }>;
 };
 
 export default async function SearchPage({ searchParams }: SearchParams) {
-  const keyword = searchParams.q;
+  const keyword = (await searchParams).q;
 
   // ページネーションのためのクエリパラメータを取得
-  const page = Number(searchParams?.page) || 1;
+  const page = Number((await searchParams)?.page) || 1;
   const perPage = 10; // 1ページあたりの表示件数
 
   const { posts, totalPages } = await searchPosts(keyword || "", page, perPage);

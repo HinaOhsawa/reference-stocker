@@ -4,8 +4,9 @@ import { NextResponse } from "next/server";
 
 export async function GET(
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params;
   const session = await auth();
   const userId = session?.user?.id;
 
@@ -16,7 +17,7 @@ export async function GET(
   const bookmark = await prisma.bookmark.findFirst({
     where: {
       userId,
-      postId: params.id,
+      postId: id,
     },
   });
 

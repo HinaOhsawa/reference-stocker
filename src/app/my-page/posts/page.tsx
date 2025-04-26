@@ -6,12 +6,12 @@ import { redirectIfUnauth } from "@/lib/redirectIfUnauth";
 export default async function MyPosts({
   searchParams,
 }: {
-  searchParams: { page?: string };
+  searchParams: Promise<{ page?: string }>;
 }) {
   await redirectIfUnauth();
 
   // ページネーションのためのクエリパラメータを取得
-  const page = Number(searchParams.page) || 1;
+  const page = Number((await searchParams).page) || 1;
   const perPage = 10; // 1ページあたりの表示件数
 
   const { myPosts, totalPages } = await getMyPosts(page, perPage);

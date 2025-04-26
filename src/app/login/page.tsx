@@ -1,9 +1,10 @@
 "use client";
 
+import { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import SignIn from "@/components/SignIn";
 
-export default function SignInPage() {
+function SignInInner() {
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") || "/";
 
@@ -13,5 +14,14 @@ export default function SignInPage() {
       <p className="mb-4">ログインして、投稿してみましょう！</p>
       <SignIn provider="google" callbackUrl={callbackUrl} />
     </div>
+  );
+}
+
+// Suspenseの中でしかフックが使えないため分離
+export default function SignInPage() {
+  return (
+    <Suspense fallback={<div>読み込み中...</div>}>
+      <SignInInner />
+    </Suspense>
   );
 }

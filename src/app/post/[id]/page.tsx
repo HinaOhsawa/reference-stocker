@@ -15,9 +15,9 @@ import { Post } from "@/types/types";
 export default async function PostDetail({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
-  const { id } = params;
+  const { id } = await params;
   const session = await auth();
 
   // 現在のユーザーがこの投稿をブックマークしているかチェック

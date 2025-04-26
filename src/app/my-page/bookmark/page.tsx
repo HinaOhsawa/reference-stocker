@@ -6,12 +6,12 @@ import { getMyBookmark } from "@/lib/user";
 export default async function Bookmark({
   searchParams,
 }: {
-  searchParams: { page?: string };
+  searchParams: Promise<{ page?: string }>;
 }) {
   await redirectIfUnauth(); // ログインしていない場合はリダイレクト
 
   // ページネーションのためのクエリパラメータを取得
-  const page = Number(searchParams.page) || 1;
+  const page = Number((await searchParams).page) || 1;
   const perPage = 10; // 1ページあたりの表示件数
 
   const { bookmarkPosts, totalPages } = await getMyBookmark(page, perPage);
