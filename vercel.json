@@ -5,8 +5,5 @@
       "src": "package.json",
       "use": "@vercel/node"
     }
-  ],
-  "hooks": {
-    "build": "npx prisma generate"
-  }
+  ]
 }
