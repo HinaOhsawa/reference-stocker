@@ -8,7 +8,7 @@ export const authConfig = {
   // theme: {
   //   logo: "https://next-auth.js.org/img/logo/logo-sm.png",
   // },
-  debug: true,
+  debug: process.env.NODE_ENV !== "production",
   // 認証プロバイダーの設定
   providers: [
     // Github({
