@@ -34,7 +34,6 @@ const PostCard = ({ PostData }: DataProps) => {
       const res = await fetch(`/api/posts/bookmark/${id}`);
       const data = await res.json();
       setBookmarked(data.bookmarked);
-      console.log(data);
     };
     fetchBookmark();
   }, [id]);
