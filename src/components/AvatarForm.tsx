@@ -23,10 +23,13 @@ import { toast } from "sonner";
 import { uploadAvatar } from "@/lib/user";
 import { useRef } from "react";
 
-export const formSchema = z.object({
+const formSchema = z.object({
   avatar: z
-    .instanceof(File)
+    .any()
     .optional()
+    .refine((file) => typeof File !== "undefined" && file instanceof File, {
+      message: "ファイルが不正です。",
+    })
     .refine((file) => !file || file.size <= 2 * 1024 * 1024, {
       message: "画像サイズは2MB以下にしてください。",
     })
