@@ -24,7 +24,7 @@ export default async function UserSettingsPage() {
   }
   return (
     <>
-      <h1 className="text-2xl font-bold mb-4">ユーザー設定</h1>
+      <h1 className="text-xl sm:text-2xl font-bold mb-4">ユーザー設定</h1>
       <Card className="flex items-center gap-1">
         <Avatar className="w-16 h-16">
           <AvatarImage src={user?.image ?? undefined} alt="@username" />

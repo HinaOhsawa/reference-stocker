@@ -61,7 +61,7 @@ const CreatePostPage = () => {
 
   return (
     <>
-      <h2 className="text-xl font-bold">新しい記事を作成</h2>
+      <h2 className="text-xl sm:text-2xl font-bold">新しい記事を作成</h2>
       <PostForm
         form={form}
         onSubmit={onSubmit}

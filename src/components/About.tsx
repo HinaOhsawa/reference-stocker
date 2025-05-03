@@ -5,7 +5,7 @@ import ScrollIndicator from "./ScrollIndicator";
 
 export default function About() {
   return (
-    <div className="max-w-3xl mx-auto px-4 py-12 text-center space-y-6">
+    <div className="max-w-3xl mx-auto px-2 py-6 sm:py-12 text-center space-y-6">
       <motion.div
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
@@ -20,10 +20,10 @@ export default function About() {
         transition={{ delay: 0.3, duration: 0.6 }}
         className="space-y-2 text-gray-600"
       >
-        <p>
+        <p className="font-medium">
           学習に使った参考記事や動画のリンクを保存・共有するためのサイトです。
         </p>
-        <p className="font-medium ">
+        <p className="font-medium">
           ログインして、学んだ知識をストックしよう！
         </p>
       </motion.div>

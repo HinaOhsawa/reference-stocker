@@ -17,7 +17,7 @@ export default async function MyPosts({
   const { myPosts, totalPages } = await getMyPosts(page, perPage);
   return (
     <>
-      <h2 className="text-lg font-bold mt-6">
+      <h2 className="text-xl sm:text-2xl font-bold">
         自分の投稿 <small className="">（{myPosts.length}件）</small>
       </h2>
       {!myPosts || myPosts.length === 0 ? (

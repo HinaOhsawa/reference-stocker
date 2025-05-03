@@ -22,7 +22,7 @@ export default async function EditPostPage({
 
   return (
     <div>
-      <h2 className="text-xl font-bold">記事を編集</h2>
+      <h2 className="text-xl sm:text-2xl font-bold">記事を編集</h2>
       <EditPostForm post={post} />
     </div>
   );

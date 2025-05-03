@@ -10,8 +10,8 @@ function SignInInner() {
 
   return (
     <div className="min-h-screen flex flex-col justify-center items-center">
-      <h1 className="text-2xl font-bold mb-4">ログイン</h1>
-      <p className="mb-4">ログインして、投稿してみましょう！</p>
+      <h1 className="text-xl sm:text-2xl font-bold ">ログイン</h1>
+      <p className="mb-4">ログインして、投稿してみよう！</p>
       <SignIn provider="google" callbackUrl={callbackUrl} />
     </div>
   );

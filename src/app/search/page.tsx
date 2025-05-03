@@ -21,28 +21,32 @@ export default async function SearchPage({ searchParams }: SearchParams) {
 
   if (!keyword || posts.length === 0) {
     return (
-      <div className="max-w-3xl mx-auto py-8 px-4">
-        <h1 className="text-2xl font-bold mb-4">検索結果：「{keyword}」</h1>
+      <>
+        <h2 className="text-xl sm:text-2xl font-bold mb-4">
+          検索結果：「{keyword}」
+        </h2>
         <SearchForm />
         <div className="text-center py-12">
-          <p className="text-xl font-medium">検索結果がありません</p>
+          <p className="text-xl font-medium">検索結果がありません。</p>
           <p className="text-muted-foreground mt-2">
             別のキーワードで検索してみてください。
           </p>
         </div>
-      </div>
+      </>
     );
   }
 
   return (
-    <div className="max-w-3xl mx-auto py-8 px-4">
-      <h1 className="text-2xl font-bold mb-4">検索結果：「{keyword}」</h1>
+    <>
+      <h2 className="text-xl sm:text-2xl font-bold mb-4">
+        検索結果：「{keyword}」
+      </h2>
       <SearchForm />
       <p className="text-muted-foreground mb-6">
-        {posts.length} 件の記事が見つかりました
+        {posts.length} 件の記事が見つかりました。
       </p>
       <PostList PostAllData={posts} />
       <Pagination currentPage={page} totalPages={totalPages} />
-    </div>
+    </>
   );
 }

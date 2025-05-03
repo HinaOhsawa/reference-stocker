@@ -14,7 +14,7 @@ export default async function Header() {
           className="
         hover:opacity-70 transition"
         >
-          <h1 className="font-bold text- sm:text-xl">Reference Stocker</h1>
+          <h1 className="font-bold text-lg sm:text-xl">Reference Stocker</h1>
         </Link>
         {session?.user && <AuthNav />}
         <AuthButton />

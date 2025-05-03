@@ -25,8 +25,8 @@ export default async function MyPage() {
   }
 
   return (
-    <div>
-      <h2 className="text-xl font-bold">マイページ</h2>
+    <>
+      <h2 className="text-xl sm:text-2xl font-bold">マイページ</h2>
       <h3 className="text-lg font-bold mt-6">ユーザー情報</h3>
       <Card className="mt-2 flex items-center gap-1">
         <Avatar className="w-16 h-16">
@@ -116,6 +116,6 @@ export default async function MyPage() {
           </div>
         </>
       )}
-    </div>
+    </>
   );
 }

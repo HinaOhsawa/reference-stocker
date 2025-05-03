@@ -29,9 +29,9 @@ export default function LinkCard({ url }: { url: string }) {
       rel="noopener noreferrer"
       onClick={(e) => e.stopPropagation()} // 親要素へのイベント伝播を防げる
     >
-      <Card className="flex flex-col p-0 sm:flex-row overflow-hidden hover:shadow-md transition-shadow">
+      <Card className="flex gap-0 sm:gap-1 p-0 flex-row overflow-hidden hover:shadow-md transition-shadow">
         {data.image ? (
-          <div className=" w-full sm:w-1/3 h-48 sm:h-auto ">
+          <div className=" w-full sm:w-1/3 h-auto flex items-center">
             <img
               src={data.image}
               alt={data.title}
@@ -39,13 +39,13 @@ export default function LinkCard({ url }: { url: string }) {
             />
           </div>
         ) : (
-          <div className="w-full sm:w-1/3 h-48 sm:h-auto w-full bg-gray-100 flex items-center justify-center text-gray-400 text-sm">
+          <div className="w-full sm:w-1/3  sm:h-auto bg-gray-100 flex items-center justify-center text-gray-400 text-sm">
             No preview available
           </div>
         )}
-        <CardContent className="p-4 flex flex-col justify-between gap-2 sm:w-2/3">
+        <CardContent className="p-2 sm:p-4 flex flex-col justify-between gap-2 w-2/3">
           <div>
-            <h3 className="text-base font-semibold line-clamp-2">
+            <h3 className="sm:text-base text-sm font-semibold line-clamp-2">
               {data.title}
             </h3>
             <p className="text-sm text-muted-foreground line-clamp-2">

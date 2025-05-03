@@ -16,7 +16,7 @@ export default function SearchForm() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex items-center justify-end gap-1 mb-4"
+      className="flex items-center justify-center sm:justify-end gap-1 mb-4"
     >
       <input
         type="text"

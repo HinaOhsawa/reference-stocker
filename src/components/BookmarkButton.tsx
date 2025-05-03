@@ -39,7 +39,7 @@ export function BookmarkButton({ postId, initialBookmarked }: Props) {
       variant="secondary"
       onClick={handleClick}
       disabled={isPending}
-      className={`w-10 h-10 text-xl mb-4 rounded-full cursor-pointer border bg-white hover:bg-gray-200 transition ${
+      className={`w-10 h-10 text-xl rounded-full cursor-pointer border bg-white hover:bg-gray-200 transition ${
         bookmarked ? "bg-blue-500 text-white" : ""
       }`}
     >

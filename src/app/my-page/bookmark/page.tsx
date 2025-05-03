@@ -18,8 +18,8 @@ export default async function Bookmark({
   // if (page > totalPages) redirect("/");
   // console.log(bookmarkPosts);
   return (
-    <div className="">
-      <h2 className="text-xl font-bold ">
+    <>
+      <h2 className="text-xl sm:text-2xl font-bold ">
         ブックマーク
         <small className="">（{bookmarkPosts.length}件）</small>
       </h2>
@@ -31,6 +31,6 @@ export default async function Bookmark({
           <Pagination currentPage={page} totalPages={totalPages} />
         </>
       )}
-    </div>
+    </>
   );
 }

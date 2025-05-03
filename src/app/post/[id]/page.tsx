@@ -34,8 +34,8 @@ export default async function PostDetail({
   const { title, url, createdAt, updatedAt, user, memo, tags } = post;
 
   return (
-    <div className="max-w-4xl mx-auto">
-      <Card className="p-6 rounded-2xl shadow-md border bg-white">
+    <>
+      <Card className="p-4 sm:p-6 rounded-2xl shadow-md border bg-white">
         <CardHeader className="px-0 space-y-4">
           <div className="flex items-center gap-4">
             <Avatar className="w-10 h-10">
@@ -48,7 +48,7 @@ export default async function PostDetail({
               <p className="font-semibold">{user.name}</p>
             </div>
           </div>
-          <h1 className="text-2xl font-bold">{title}</h1>
+          <h1 className="text-xl sm:text-2xl font-bold">{title}</h1>
           <div className="flex flex-wrap gap-1">
             {tags?.map((tag) => (
               <span key={tag.id} className="tag">
@@ -56,7 +56,7 @@ export default async function PostDetail({
               </span>
             ))}
           </div>
-          <div className="flex gap-4 flex-wrap text-sm text-muted-foreground mb-2">
+          <div className="flex gap-2 flex-wrap text-sm text-muted-foreground mb-2">
             <p>投稿日 {dayjs(createdAt).format("YYYY/MM/DD HH:mm")}</p>
             <p>更新日 {dayjs(updatedAt).format("YYYY/MM/DD HH:mm")}</p>
           </div>
@@ -65,7 +65,7 @@ export default async function PostDetail({
           <div className="space-y-4">
             <LinkCard url={url} />
             <h3 className="font-semibold mt-6 mb-2">Memo</h3>
-            <p className="text-sm text-muted-foreground line-clamp-3">{memo}</p>
+            <p className="text-muted-foreground line-clamp-3">{memo}</p>
           </div>
           <div className="flex justify-end items-center gap-2">
             <BookmarkButton postId={id} initialBookmarked={existingBookmark} />
@@ -74,6 +74,6 @@ export default async function PostDetail({
       </Card>
 
       <RelatedPosts postId={id} />
-    </div>
+    </>
   );
 }
