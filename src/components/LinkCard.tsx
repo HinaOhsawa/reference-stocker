@@ -29,13 +29,13 @@ export default function LinkCard({ url }: { url: string }) {
       rel="noopener noreferrer"
       onClick={(e) => e.stopPropagation()} // 親要素へのイベント伝播を防げる
     >
-      <Card className="flex gap-0 sm:gap-1 p-0 flex-row overflow-hidden hover:shadow-md transition-shadow">
+      <Card className="rounded-md flex gap-0 sm:gap-1 p-0 flex-row overflow-hidden hover:shadow-md transition-shadow">
         {data.image ? (
           <div className=" w-full sm:w-1/3 h-auto flex items-center">
             <img
               src={data.image}
               alt={data.title}
-              className="w-full hover:opacity-90 transition "
+              className="w-full hover:opacity-90 transition"
             />
           </div>
         ) : (
