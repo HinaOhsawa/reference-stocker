@@ -2,74 +2,80 @@
 import { NextRequest, NextResponse } from "next/server";
 import { JSDOM } from "jsdom";
 
+const YOUTUBE_API_KEY = process.env.YOUTUBE_API_KEY;
+
 export async function GET(req: NextRequest) {
   const url = req.nextUrl.searchParams.get("url");
   if (!url) {
-    return NextResponse.json({ error: "URL is required" }, { status: 400 });
+    return NextResponse.json({ error: "URLが必要です" }, { status: 400 });
   }
 
-  try {
-    const parsedUrl = new URL(url);
+  if (isYouTubeUrl(url)) {
+    const videoId = extractVideoId(url);
+    if (!videoId)
+      return NextResponse.json({ error: "不正なYouTube URL" }, { status: 400 });
 
-    // YouTubeのURLならサムネイルURLを構築して返す
-    if (
-      parsedUrl.hostname.includes("youtube.com") ||
-      parsedUrl.hostname === "youtu.be"
-    ) {
-      const videoId = getYouTubeVideoId(url);
-      if (videoId) {
-        return NextResponse.json({
-          title: "YouTube Video",
-          description: "YouTube video thumbnail",
-          image: `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`,
-          url,
-        });
-      }
+    const api = `https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${videoId}&key=${YOUTUBE_API_KEY}`;
+    const res = await fetch(api);
+    const json = await res.json();
+
+    if (!json.items || json.items.length === 0) {
+      return NextResponse.json(
+        { error: "動画が見つかりません" },
+        { status: 404 }
+      );
     }
 
-    // 通常のHTMLからOGPを取得
-    const res = await fetch(url);
+    const snippet = json.items[0].snippet;
+    return NextResponse.json({
+      title: snippet.title,
+      description: snippet.description,
+      image: snippet.thumbnails.high.url,
+      url,
+    });
+  }
+
+  // 一般のOGP取得
+  try {
+    const res = await fetch(url, { next: { revalidate: 60 } });
     const html = await res.text();
     const dom = new JSDOM(html);
-    const meta = dom.window.document;
+    const doc = dom.window.document;
 
     const getMeta = (property: string) =>
-      meta
-        .querySelector(`meta[property='${property}']`)
-        ?.getAttribute("content") ||
-      meta.querySelector(`meta[name='${property}']`)?.getAttribute("content") ||
+      (
+        doc.querySelector(
+          `meta[property="${property}"]`
+        ) as HTMLMetaElement | null
+      )?.content ||
+      (doc.querySelector(`meta[name="${property}"]`) as HTMLMetaElement | null)
+        ?.content ||
       "";
 
-    const data = {
-      title: getMeta("og:title") || meta.title,
-      description: getMeta("og:description"),
-      image: getMeta("og:image"),
+    return NextResponse.json({
+      title: getMeta("og:title") || doc.title,
+      description: getMeta("og:description") || "",
+      image: getMeta("og:image") || "",
       url,
-    };
-
-    return NextResponse.json(data);
-  } catch (err) {
-    console.error("OGP fetch error:", err);
+    });
+  } catch {
     return NextResponse.json(
-      { error: "Failed to fetch OGP data" },
+      { error: "OGP取得に失敗しました" },
       { status: 500 }
     );
   }
 }
 
-// YouTubeのURLからvideo IDを取り出す
-function getYouTubeVideoId(url: string): string | null {
+function isYouTubeUrl(url: string) {
+  return /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)/.test(url);
+}
+
+function extractVideoId(url: string): string | null {
   try {
-    const parsedUrl = new URL(url);
-
-    if (parsedUrl.hostname === "youtu.be") {
-      return parsedUrl.pathname.slice(1);
-    }
-
-    if (parsedUrl.hostname.includes("youtube.com")) {
-      return parsedUrl.searchParams.get("v");
-    }
-
+    const parsed = new URL(url);
+    if (parsed.hostname === "youtu.be") return parsed.pathname.slice(1);
+    if (parsed.hostname.includes("youtube.com"))
+      return parsed.searchParams.get("v");
     return null;
   } catch {
     return null;
