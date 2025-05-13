@@ -31,7 +31,7 @@ export default function LinkCard({ url }: { url: string }) {
     >
       <Card className="rounded-md flex gap-0 sm:gap-1 p-0 flex-row overflow-hidden hover:shadow-md transition-shadow">
         {data.image ? (
-          <div className=" w-full sm:w-1/3 h-auto flex items-center">
+          <div className="w-1/3 h-auto flex items-center">
             <img
               src={data.image}
               alt={data.title}
@@ -39,7 +39,7 @@ export default function LinkCard({ url }: { url: string }) {
             />
           </div>
         ) : (
-          <div className="w-full sm:w-1/3  sm:h-auto bg-gray-100 flex items-center justify-center text-gray-400 text-sm">
+          <div className="w-1/3 h-auto bg-gray-100 flex items-center justify-center text-gray-400 text-sm">
             No preview available
           </div>
         )}
