@@ -1,7 +1,7 @@
 import PostList from "@/components/PostList";
 import SearchForm from "@/components/SearchForm";
 import Pagination from "@/components/Pagination";
-import { fetchPostsPaginated } from "@/lib/posts";
+import { getPostsPaginated } from "@/lib/posts";
 import { redirect } from "next/navigation";
 import About from "@/components/About";
 
@@ -14,7 +14,8 @@ export default async function Home({
   const page = Number((await searchParams).page) || 1;
   const perPage = 10; // 1ページあたりの表示件数
 
-  const { posts, totalPages } = await fetchPostsPaginated(page, perPage);
+  const { posts, totalPages } = await getPostsPaginated(page, perPage);
+
   if (page > totalPages) redirect("/");
 
   return (
