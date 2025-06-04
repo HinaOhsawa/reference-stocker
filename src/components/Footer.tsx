@@ -88,8 +88,7 @@ export default async function Footer() {
         {/* 著作権 */}
         <div className="pt-8 mt-8">
           <p className="text-center text-xs text-muted-foreground">
-            &copy; {new Date().getFullYear()} Reference Stocker. All rights
-            reserved.
+            &copy; 2025 Reference Stocker. All rights reserved.
           </p>
         </div>
       </div>
