@@ -20,6 +20,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Reference Stocker",
   description: "学習に使った参考記事や動画のリンクを保存・共有するためのサイト",
+  icons: {
+    icon: "/R-logo.ico",
+  },
 };
 
 export default function RootLayout({
