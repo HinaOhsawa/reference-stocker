@@ -1,4 +1,3 @@
-// /app/api/ogp/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import { JSDOM } from "jsdom";
 
@@ -12,30 +11,33 @@ export async function GET(req: NextRequest) {
 
   if (isYouTubeUrl(url)) {
     const videoId = extractVideoId(url);
-    if (!videoId)
-      return NextResponse.json({ error: "不正なYouTube URL" }, { status: 400 });
-
-    const api = `https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${videoId}&key=${YOUTUBE_API_KEY}`;
-    const res = await fetch(api);
-    const json = await res.json();
-
-    if (!json.items || json.items.length === 0) {
-      return NextResponse.json(
-        { error: "動画が見つかりません" },
-        { status: 404 }
-      );
+    if (!videoId) {
+      return createFallbackOGP(url);
     }
 
-    const snippet = json.items[0].snippet;
-    return NextResponse.json({
-      title: snippet.title,
-      description: snippet.description,
-      image: snippet.thumbnails.high.url,
-      url,
-    });
+    try {
+      const api = `https://www.googleapis.com/youtube/v3/videos?part=snippet&id=${videoId}&key=${YOUTUBE_API_KEY}`;
+      const res = await fetch(api);
+      if (!res.ok) throw new Error("YouTube API失敗");
+      const json = await res.json();
+
+      if (!json.items || json.items.length === 0) {
+        return createFallbackOGP(url);
+      }
+
+      const snippet = json.items[0].snippet;
+      return NextResponse.json({
+        title: snippet.title,
+        description: snippet.description,
+        image: snippet.thumbnails.high.url,
+        url,
+      });
+    } catch {
+      return createFallbackOGP(url);
+    }
   }
 
-  // 一般のOGP取得
+  // 一般サイトのOGP取得
   try {
     const res = await fetch(url, { next: { revalidate: 60 } });
     const html = await res.text();
@@ -52,18 +54,28 @@ export async function GET(req: NextRequest) {
         ?.content ||
       "";
 
+    const title = getMeta("og:title") || doc.title || url;
+    const description = getMeta("og:description") || "";
+    const image = getMeta("og:image") || "";
+
     return NextResponse.json({
-      title: getMeta("og:title") || doc.title,
-      description: getMeta("og:description") || "",
-      image: getMeta("og:image") || "",
+      title,
+      description,
+      image,
       url,
     });
   } catch {
-    return NextResponse.json(
-      { error: "OGP取得に失敗しました" },
-      { status: 500 }
-    );
+    return createFallbackOGP(url);
   }
+}
+
+function createFallbackOGP(url: string) {
+  return NextResponse.json({
+    title: url,
+    description: "",
+    image: "",
+    url,
+  });
 }
 
 function isYouTubeUrl(url: string) {
