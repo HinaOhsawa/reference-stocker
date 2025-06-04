@@ -1,8 +1,7 @@
 "use client";
+
 import { useEffect, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
-import Skeleton from "react-loading-skeleton"; // 追加（必要ならインストール）
-import "react-loading-skeleton/dist/skeleton.css"; // スタイル読み込み
 
 type OGPData = {
   title: string;
@@ -25,14 +24,12 @@ export default function LinkCard({ url }: { url: string }) {
 
   if (loading) {
     return (
-      <Card className="rounded-md flex gap-0 sm:gap-1 p-0 flex-row overflow-hidden">
-        <div className="w-1/3 h-24">
-          <Skeleton height="100%" />
-        </div>
-        <CardContent className="p-2 sm:p-4 flex flex-col justify-between gap-2 w-2/3">
-          <Skeleton height={20} width="80%" />
-          <Skeleton height={16} width="100%" />
-          <Skeleton height={14} width="60%" />
+      <Card className="rounded-md flex gap-0 sm:gap-1 p-0 flex-row overflow-hidden animate-pulse border border-gray-200">
+        <div className="w-1/3 bg-gray-200 h-24 sm:h-32" />
+        <CardContent className="p-2 sm:p-4 flex flex-col gap-2 w-2/3">
+          <div className="h-4 bg-gray-200 rounded w-3/4" />
+          <div className="h-3 bg-gray-200 rounded w-full" />
+          <div className="h-3 bg-gray-200 rounded w-1/2 mt-auto" />
         </CardContent>
       </Card>
     );
