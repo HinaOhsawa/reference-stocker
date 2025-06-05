@@ -1,4 +1,4 @@
-# Reference 　 Stocker
+# ReferenceStocker
 
 学習に使った参考記事や動画のリンクを保存・共有するためのサイトです。
 Next.js + TypeScript + Supabase + Prisma を使用して作成しました。記事の投稿、編集、削除、ブックマークができる掲示板のようなアプリです。NextAuth.js でログイン機能を実装しています。
@@ -31,21 +31,74 @@ Next.js + TypeScript + Supabase + Prisma を使用して作成しました。記
 
 ## 使用技術
 
-- React
-- Next.js
-- TypeScript
-- Tailwind CSS
-- Prisma
-- Supabase
-- NextAuth.js
-- shad/ui
-- zod
-- YouTube Data API v3
-- Render
+<table border="1">
+  <thead>
+    <tr>
+      <th>項目</th>
+      <th>説明</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr>
+      <td>Node.js</td>
+      <td>JavaScriptの実行環境</td>
+    </tr>
+    <tr>
+      <td>React</td>
+      <td>ライブラリ</td>
+    </tr>
+    <tr>
+      <td>Next.js</td>
+      <td>Reactベースのフレームワーク</td>
+    </tr>
+    <tr>
+      <td>TypeScript</td>
+      <td>JavaScriptの型付け言語</td>
+    </tr>
+    <tr>
+      <td>Tailwind CSS</td>
+      <td>CSSフレームワーク</td>
+    </tr>
+    <tr>
+      <td>Prisma</td>
+      <td>ORM</td>
+    </tr>
+    <tr>
+      <td>Supabase</td>
+      <td>データベース・ストレージサービス</td>
+    </tr>
+    <tr>
+      <td>PostgreSQL</td>
+      <td>リレーショナルデータベース</td>
+    </tr>
+    <tr>
+      <td>NextAuth.js</td>
+      <td>認証ライブラリ</td>
+    </tr>
+    <tr>
+      <td>shadcn/ui</td>
+      <td>UIコンポーネントライブラリ</td>
+    </tr>
+    <tr>
+      <td>zod</td>
+      <td>バリデーションライブラリ</td>
+    </tr>
+    <tr>
+      <td>YouTube Data API v3</td>
+      <td>YouTubeのOGP情報を取得するAPI</td>
+    </tr>
+    <tr>
+      <td>Render</td>
+      <td>ホスティングサービス</td>
+    </tr>
+    <tr>
+      <td>lucide</td>
+      <td>アイコンセット</td>
+    </tr>
+  </tbody>
+</table>
 
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
-
-## Getting Started
+## Run Command
 
 First, run the development server:
 
@@ -61,21 +114,14 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Build Command
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npx prisma generate && next build
+```
 
-## Learn More
+## Start Command
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+npm run start
+```
