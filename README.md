@@ -98,6 +98,112 @@ Next.js + TypeScript + Supabase + Prisma を使用して作成しました。記
   </tbody>
 </table>
 
+
+## データベース構造
+### Postテーブル
+<table border="1">
+  <thead>
+    <tr>
+      <th>フィールド名</th>
+      <th>型</th>
+      <th>説明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>id</td><td>String</td><td>主キー（cuid）</td></tr>
+    <tr><td>title</td><td>String</td><td>タイトル</td></tr>
+    <tr><td>url</td><td>String</td><td>リンク先URL</td></tr>
+    <tr><td>memo</td><td>String?</td><td>任意メモ</td></tr>
+    <tr><td>userId</td><td>String</td><td>投稿者のID</td></tr>
+    <tr><td>published</td><td>Boolean</td><td>公開フラグ（デフォルト: true）</td></tr>
+    <tr><td>createdAt</td><td>DateTime</td><td>作成日時</td></tr>
+    <tr><td>updatedAt</td><td>DateTime</td><td>更新日時</td></tr>
+    <tr><td>Bookmarks</td><td>Bookmark[]</td><td>ブックマークとのリレーション</td></tr>
+    <tr><td>user</td><td>User</td><td>投稿者とのリレーション</td></tr>
+    <tr><td>tags</td><td>Tag[]</td><td>タグとの多対多リレーション</td></tr>
+  </tbody>
+</table>
+
+### Userテーブル
+<table border="1">
+  <thead>
+    <tr>
+      <th>フィールド名</th>
+      <th>型</th>
+      <th>説明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>id</td><td>String</td><td>主キー（cuid）</td></tr>
+    <tr><td>name</td><td>String?</td><td>ユーザー名（任意）</td></tr>
+    <tr><td>email</td><td>String?</td><td>メールアドレス（ユニーク）</td></tr>
+    <tr><td>image</td><td>String?</td><td>プロフィール画像URL</td></tr>
+    <tr><td>createdAt</td><td>DateTime</td><td>作成日時</td></tr>
+    <tr><td>updatedAt</td><td>DateTime</td><td>更新日時</td></tr>
+    <tr><td>accounts</td><td>Account[]</td><td>アカウント情報</td></tr>
+    <tr><td>Bookmarks</td><td>Bookmark[]</td><td>ブックマーク一覧</td></tr>
+    <tr><td>posts</td><td>Post[]</td><td>ユーザーの投稿一覧</td></tr>
+  </tbody>
+</table>
+
+### Accountテーブル
+<table border="1">
+  <thead>
+    <tr>
+      <th>フィールド名</th>
+      <th>型</th>
+      <th>説明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>id</td><td>String</td><td>主キー（cuid）</td></tr>
+    <tr><td>userId</td><td>String</td><td>ユーザーID</td></tr>
+    <tr><td>provider</td><td>String</td><td>OAuthプロバイダー名（例: github）</td></tr>
+    <tr><td>providerAccountId</td><td>String</td><td>プロバイダー側のID</td></tr>
+    <tr><td>createdAt</td><td>DateTime</td><td>作成日時</td></tr>
+    <tr><td>updatedAt</td><td>DateTime</td><td>更新日時</td></tr>
+    <tr><td>user</td><td>User</td><td>リレーション：紐づくユーザー</td></tr>
+  </tbody>
+</table>
+
+### Tag テーブル
+<table border="1">
+  <thead>
+    <tr>
+      <th>フィールド名</th>
+      <th>型</th>
+      <th>説明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>id</td><td>String</td><td>主キー（cuid）</td></tr>
+    <tr><td>name</td><td>String</td><td>タグ名（ユニーク）</td></tr>
+    <tr><td>createdAt</td><td>DateTime</td><td>作成日時</td></tr>
+    <tr><td>updatedAt</td><td>DateTime</td><td>更新日時</td></tr>
+    <tr><td>posts</td><td>Post[]</td><td>リレーション：紐づく投稿一覧</td></tr>
+  </tbody>
+</table>
+
+### Bookmark テーブル
+<table border="1">
+  <thead>
+    <tr>
+      <th>フィールド名</th>
+      <th>型</th>
+      <th>説明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>id</td><td>String</td><td>主キー（uuid）</td></tr>
+    <tr><td>userId</td><td>String</td><td>ユーザーID</td></tr>
+    <tr><td>postId</td><td>String</td><td>投稿ID</td></tr>
+    <tr><td>createdAt</td><td>DateTime</td><td>作成日時</td></tr>
+    <tr><td>post</td><td>Post</td><td>リレーション：投稿</td></tr>
+    <tr><td>user</td><td>User</td><td>リレーション：ユーザー</td></tr>
+  </tbody>
+</table>
+
+
 ## Run Command
 
 First, run the development server:
