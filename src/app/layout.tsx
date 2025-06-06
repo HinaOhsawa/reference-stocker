@@ -20,6 +20,29 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Reference Stocker",
   description: "学習に使った参考記事や動画のリンクを保存・共有するためのサイト",
+  openGraph: {
+    title: "Reference Stocker",
+    description:
+      "学習に使った参考記事や動画のリンクを保存・共有するためのサイト",
+    url: "https://reference-stocker.onrender.com",
+    siteName: "Reference Stocker",
+    images: [
+      {
+        url: "https://reference-stocker.onrender.com/images/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "ogp image",
+      },
+    ],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Reference Stocker",
+    description:
+      "学習に使った参考記事や動画のリンクを保存・共有するためのサイト",
+    images: ["https://reference-stocker.onrender.com/images/og-image.jpg"],
+  },
   icons: {
     icon: "/R-logo.ico",
   },
