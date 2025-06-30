@@ -9,7 +9,7 @@ Next.js + TypeScript + Supabase + Prisma を使用して作成しました。記
 
 - [https://reference-stocker.onrender.com/](https://reference-stocker.onrender.com/)
 
-## 仕様
+## ✔️仕様
 
 - ホームの記事一覧は新しい記事から上位に表示されます。
 - トップの検索窓から記事を検索できます。
